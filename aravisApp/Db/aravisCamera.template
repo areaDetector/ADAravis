@@ -1,0 +1,287 @@
+# Database for the records specific to the aravis GigE driver
+# Macros:
+#% macro, P, Device Prefix
+#% macro, R, Device Suffix
+#% macro, PORT, Asyn Port name
+#% macro, TIMEOUT, Timeout, default 1
+#% macro, ADDR, Asyn Port address, default 0
+
+include "ADBase.template"
+
+# All tags starting with gdatag are DLS specific for GDA
+# % gdatag, template, aravisCamera, $(PORT)_aravisCamera, $(PORT) aravisCamera class instance
+
+# Only 2 data types are supported, unsigned 8 and 16 bit integers
+record(mbbo, "$(P)$(R)DataType")
+{
+   field(ZRST, "UInt8")
+   field(ZRVL, "1")
+   field(ONST, "UInt16")
+   field(ONVL, "3")
+   field(TWST, "")
+   field(TWVL, "")
+   field(THST, "")
+   field(THVL, "")
+   field(FRST, "")
+   field(FRVL, "")
+   field(FVST, "")
+   field(FVVL, "")
+   field(SXST, "")
+   field(SXVL, "")
+   field(SVST, "")
+   field(SVVL, "")
+   info(autosaveFields, "VAL")
+}
+
+record(mbbi, "$(P)$(R)DataType_RBV")
+{
+   field(ZRST, "UInt8")
+   field(ZRVL, "1")
+   field(ONST, "UInt16")
+   field(ONVL, "3")
+   field(TWST, "")
+   field(TWVL, "")
+   field(THST, "")
+   field(THVL, "")
+   field(FRST, "")
+   field(FRVL, "")
+   field(FVST, "")
+   field(FVVL, "")
+   field(SXST, "")
+   field(SXVL, "")
+   field(SVST, "")
+   field(SVVL, "")
+}
+
+# Redefine the color mode choices from ADBase.template to only have those that the aravisCamera
+# driver supports.  Keep the same values (xxVL), but change the menu numbers.
+
+# Only Mono, Bayer and RGB1 color modes are supported at this time
+record(mbbo, "$(P)$(R)ColorMode")
+{
+   field(ZRST, "Mono")
+   field(ZRVL, "0")
+   field(ONST, "Bayer")
+   field(ONVL, "1")
+   field(TWST, "RGB1")
+   field(TWVL, "2")
+   field(THST, "")
+   field(THVL, "")
+   field(FRST, "")
+   field(FRVL, "")
+   field(FVST, "")
+   field(FVVL, "")
+   field(SXST, "")
+   field(SXVL, "")
+   field(SVST, "")
+   field(SVVL, "")
+   info(autosaveFields, "VAL")
+}
+
+record(mbbi, "$(P)$(R)ColorMode_RBV")
+{
+   field(ZRST, "Mono")
+   field(ZRVL, "0")
+   field(ONST, "Bayer")
+   field(ONVL, "1")
+   field(TWST, "RGB1")
+   field(TWVL, "2")
+   field(THST, "")
+   field(THVL, "")
+   field(FRST, "")
+   field(FRVL, "")
+   field(FVST, "")
+   field(FVVL, "")
+   field(SXST, "")
+   field(SXVL, "")
+   field(SVST, "")
+   field(SVVL, "")
+}
+
+
+# % gdatag, pv, ro, $(PORT)_aravisCamera, COMPLETED_RBV, Readback for Frames Completed
+record(ai, "$(P)$(R)COMPLETED_RBV")
+{
+   field(DTYP, "asynFloat64")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_COMPLETED")
+   field(SCAN, "I/O Intr")
+   info(autosaveFields, "DESC LLSV LOLO LOW LSV")
+}
+
+# % gdatag, pv, ro, $(PORT)_aravisCamera, FAILURES_RBV, Readback for Frame Failures
+record(ai, "$(P)$(R)FAILURES_RBV")
+{
+   field(DTYP, "asynFloat64")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_FAILURES")
+   field(SCAN, "I/O Intr")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
+}
+
+# % gdatag, pv, ro, $(PORT)_aravisCamera, UNDERRUNS_RBV, Readback for Frame Underruns
+record(ai, "$(P)$(R)UNDERRUNS_RBV")
+{
+   field(DTYP, "asynFloat64")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_UNDERRUNS")
+   field(SCAN, "I/O Intr")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
+}
+
+# % gdatag, pv, ro, $(PORT)_aravisCamera, MISSING_PKTS_RBV, Readback for Missing Packet count
+record(longin, "$(P)$(R)MISSING_PKTS_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_MISSING_PKTS")
+   field(SCAN, "I/O Intr")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
+}
+
+# % gdatag, pv, ro, $(PORT)_aravisCamera, RESENT_PKTS_RBV, Readback for Resent Packet count
+record(longin, "$(P)$(R)RESENT_PKTS_RBV")
+{
+   field(DTYP, "asynInt32")
+   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_RESENT_PKTS")
+   field(SCAN, "I/O Intr")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV")
+}
+
+record(mbbo, "$(P)$(R)PKT_RESEND")
+{
+   field(DESC, "Packet resend enable")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_PKT_RESEND")
+   field(ZRST, "Never")
+   field(ZRVL, "0")
+   field(ONST, "Always")
+   field(ONVL, "1")
+   field(VAL,  "1")
+   field(PINI, "1")
+   info(autosaveFields, "DESC ONSV SRSV PINI VAL")
+}
+
+record(longout, "$(P)$(R)PKT_TIMEOUT")
+{
+   field(DESC, "Delay in us before packet resend request")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_PKT_TIMEOUT")
+   field(VAL,  "20000")
+   field(EGU,  "us")
+   field(PINI, "1")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV LLSV LOLO LOW LSV PINI VAL")
+}
+
+record(longout, "$(P)$(R)FRAME_RETENTION")
+{
+   field(DESC, "Frame timeout in us after last packet")
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_FRAME_RETENTION")
+   field(VAL,  "100000")
+   field(EGU,  "us")
+   field(PINI, "1")
+   info(autosaveFields, "DESC HHSV HIHI HIGH HSV LLSV LOLO LOW LSV PINI VAL")
+}
+
+record(longout, "$(P)$(R)RESET")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_RESET")
+   field(FLNK, "$(P)$(R)CONNECTION")
+}
+
+record(bi, "$(P)$(R)GETFEATURES_RBV") {
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_GETFEATURES")
+  field(SCAN, "I/O Intr")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+}
+
+record(bo, "$(P)$(R)GETFEATURES") {
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_GETFEATURES")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(VAL,  "1")
+  field(PINI, "YES")
+  info(autosaveFields, "DESC VAL")
+}
+
+record(longout, "$(P)$(R)CONNECTION")
+{
+   field(DTYP, "asynInt32")
+   field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_CONNECTION")
+   field(VAL, "1")
+   field(PINI, "1")
+}
+
+record(calcout, "$(P)$(R)CHKCONN")
+{
+   field(SCAN, "1 second")
+   field(INPA, "$(P)$(R)CONNECTION.SEVR CP")
+   field(CALC, "A==0")
+   field(OOPT, "When Non-zero")
+   field(OUT,  "$(P)$(R)CONNECTION.PROC PP")
+}
+
+record(mbbi, "$(P)$(R)LEFTSHIFT_RBV") {
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_LEFTSHIFT")
+  field(ZRST, "No")
+  field(ZRVL, "0")
+  field(ONST, "Yes")
+  field(ONVL, "1")
+  field(SCAN, "I/O Intr")
+  info(autosaveFields, "DESC ZRSV ONSV")
+}
+
+## If this is set to 1, then 10, 12 and 16 bit images will be left shifted 
+## so that a pixel with maximum exposure = 2^16 no matter what the pixel format 
+record(mbbo, "$(P)$(R)LEFTSHIFT") {
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_LEFTSHIFT")
+  field(ZRST, "No")
+  field(ZRVL, "0")
+  field(ONST, "Yes")
+  field(ONVL, "1")
+  info(autosaveFields, "DESC ZRSV ONSV VAL")
+}
+
+record(bi, "$(P)$(R)HWIMAGEMODE_RBV") {
+  field(DESC, "Use HW register for acquisiton modes")
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_HWIMAGEMODE")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  field(SCAN, "I/O Intr")
+  info(autosaveFields, "DESC ZRSV ONSV")
+}
+
+## If this is set to 1, the acquisition mode is communicated to the
+## hardware, on zero a software based implementation is used
+record(bo, "$(P)$(R)HWIMAGEMODE") {
+  field(DESC, "Use HW register for image modes")
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_HWIMAGEMODE")
+  field(ZNAM, "No")
+  field(ONAM, "Yes")
+  info(autosaveFields, "DESC ZRSV ONSV VAL")
+}
+
+# unsupported fields
+record(bo, "$(P)$(R)ReverseX") {
+  field(DISA, "1")
+}
+record(bo, "$(P)$(R)ReverseY") {
+  field(DISA, "1")
+}
+record(longout, "$(P)$(R)NumExposures") {
+  field(DISA, "1")
+}  
+record(longin, "$(P)$(R)NumExposures_RBV") {
+  field(DISA, "1")
+}  
+record(longin, "$(P)$(R)NumExposuresCounter_RBV") {
+  field(DISA, "1")
+}
+record(mbbo, "$(P)$(R)TriggerMode") {
+  field(DISA, "1")
+}
