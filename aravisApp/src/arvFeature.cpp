@@ -4,10 +4,11 @@
 
 #include <arvFeature.h>
 
-arvFeature::arvFeature(GenICamFeatureSet *set, std::string const & asynName, asynParamType asynType,
+arvFeature::arvFeature(GenICamFeatureSet *set, 
+                       std::string const & asynName, asynParamType asynType, int asynIndex,
                        std::string const & featureName, GCFeatureType_t featureType, ArvDevice *device)
                      
-    : GenICamFeature(set, asynName, asynType, featureName, featureType),
+    : GenICamFeature(set, asynName, asynType, asynIndex, featureName, featureType),
     mNode(0), mDevice(device)         
 {
     mNode = arv_device_get_feature(mDevice, featureName.c_str());
