@@ -36,7 +36,6 @@ extern "C" {
 #include <arvFeature.h>
 
 #define DRIVER_VERSION "1.1.0"
-#define ARAVIS_VERSION "0.5.13"
 
 /* number of raw buffers in our queue */
 #define NRAW 20
@@ -276,6 +275,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName,
        pollingLoop(*this, "aravisPoll", stackSize, epicsThreadPriorityHigh)
 {
     const char *functionName = "ADAravis";
+    char tempString[256];
 
     /* glib initialisation */
     //g_type_init ();
@@ -307,7 +307,8 @@ ADAravis::ADAravis(const char *portName, const char *cameraName,
 
     /* Set some initial values for other parameters */
     setStringParam(NDDriverVersion, DRIVER_VERSION);
-    setStringParam(ADSDKVersion, ARAVIS_VERSION);
+    sprintf(tempString, "%d.%d.%d", ARAVIS_MAJOR_VERSION, ARAVIS_MINOR_VERSION, ARAVIS_MICRO_VERSION);
+    setStringParam(ADSDKVersion, tempString);
     setIntegerParam(ADReverseX, 0);
     setIntegerParam(ADReverseY, 0);
     setIntegerParam(ADImageMode, ADImageContinuous);
@@ -576,7 +577,7 @@ void ADAravis::report(FILE *fp, int details)
         fprintf(fp, "  Data type:         %d\n", dataType);
     }
     /* Invoke the base class method */
-    ADDriver::report(fp, details);
+    ADGenICam::report(fp, details);
 }
 
 
@@ -935,11 +936,11 @@ static const iocshArg ADAravisConfigArg2 = {"maxMemory", iocshArgInt};
 static const iocshArg ADAravisConfigArg3 = {"priority", iocshArgInt};
 static const iocshArg ADAravisConfigArg4 = {"stackSize", iocshArgInt};
 static const iocshArg * const ADAravisConfigArgs[] =  {&ADAravisConfigArg0,
-                                                          &ADAravisConfigArg1,
-                                                          &ADAravisConfigArg2,
-                                                          &ADAravisConfigArg3,
-                                                          &ADAravisConfigArg4};
-static const iocshFuncDef configADAravis = {"aravisConfig", 6, ADAravisConfigArgs};
+                                                       &ADAravisConfigArg1,
+                                                       &ADAravisConfigArg2,
+                                                       &ADAravisConfigArg3,
+                                                       &ADAravisConfigArg4};
+static const iocshFuncDef configADAravis = {"aravisConfig", 5, ADAravisConfigArgs};
 static void configADAravisCallFunc(const iocshArgBuf *args)
 {
     ADAravisConfig(args[0].sval, args[1].sval, args[2].ival, 
