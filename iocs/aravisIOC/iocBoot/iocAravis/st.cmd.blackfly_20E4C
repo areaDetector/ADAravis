@@ -1,0 +1,14 @@
+< envPaths
+errlogInit(20000)
+
+dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
+ADAravisApp_registerRecordDeviceDriver(pdbbase) 
+
+# Use this line for a specific camera by serial number, in this case a BlackFlyS GigE
+epicsEnvSet("CAMERA_ID", "13481965")
+#epicsEnvSet("CAMERA_ID", "0")
+
+epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/PGR_Blackfly_20E4C.template")
+
+< st.cmd.base
+
