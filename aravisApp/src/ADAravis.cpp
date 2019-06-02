@@ -121,7 +121,7 @@ public:
     /* These are the methods that we override from ADDriver */
     virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
     virtual GenICamFeature *createFeature(GenICamFeatureSet *set, 
-                                          std::string const & asynName, asynParamType asynType, 
+                                          std::string const & asynName, asynParamType asynType, int asynIndex,
                                           std::string const & featureName, GCFeatureType_t featureType);
     virtual asynStatus startCapture();
     virtual asynStatus stopCapture();
@@ -174,9 +174,9 @@ private:
 };
 
 GenICamFeature *ADAravis::createFeature(GenICamFeatureSet *set, 
-                                        std::string const & asynName, asynParamType asynType, 
+                                        std::string const & asynName, asynParamType asynType, int asynIndex,
                                         std::string const & featureName, GCFeatureType_t featureType) {
-    return new arvFeature(set, asynName, asynType, featureName, featureType, this->device);
+    return new arvFeature(set, asynName, asynType, asynIndex, featureName, featureType, this->device);
 }
 
 /** Called by epicsAtExit to shutdown camera */
@@ -842,7 +842,7 @@ asynStatus ADAravis::startCapture() {
     getIntegerParam(AravisHWImageMode, &hwImageMode);
     getIntegerParam(ADImageMode, &imageMode);
 
-    if (hwImageMode and imageMode == ADImageSingle) {
+    if (hwImageMode && imageMode == ADImageSingle) {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME);
     } else if (hwImageMode && (imageMode == ADImageMultiple) && mGCFeatureSet.getByName("AcquisitionFrameCount")) {
         getIntegerParam(ADNumImages, &numImages);
