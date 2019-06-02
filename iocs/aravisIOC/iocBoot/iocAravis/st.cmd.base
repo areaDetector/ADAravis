@@ -22,9 +22,8 @@ epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADARAVIS)/db")
 # Define NELEMENTS to be enough for a 2048x2048x3 (color) image
 epicsEnvSet("NELEMENTS", "12592912")
 
-# aravisConfig(const char *portName, const char *cameraId, int traceMask, int memoryChannel,
-#                   size_t maxMemory, int priority, int stackSize)
-aravisConfig("$(PORT)", $(CAMERA_ID), 0x1, 0)
+# aravisConfig(const char *portName, const char *cameraName, size_t maxMemory, int priority, int stackSize)
+aravisConfig("$(PORT)", "$(CAMERA_NAME)", 0, 0, 0)
 asynSetTraceIOMask($(PORT), 0, 2)
 # Set ASYN_TRACE_WARNING and ASYN_TRACE_ERROR
 #asynSetTraceMask($(PORT), 0, 0xff)
