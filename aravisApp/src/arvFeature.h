@@ -11,7 +11,8 @@ extern "C" {
 class arvFeature : public GenICamFeature
 {
 public:
-    arvFeature(GenICamFeatureSet *set, std::string const & asynName, asynParamType asynType,
+    arvFeature(GenICamFeatureSet *set, 
+               std::string const & asynName, asynParamType asynType, int asynIndex,
                std::string const & featureName,
                GCFeatureType_t featureType, ArvDevice *device);
     virtual bool isImplemented(void);
