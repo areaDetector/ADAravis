@@ -2,7 +2,7 @@
 # Run "gnumake clean uninstall install" in the application
 # top directory each time this file is changed.
 
-ARAVISGIGE=$(TOP)/../..
+ADARAVIS=$(TOP)/../..
 
 -include $(TOP)/../../../configure/RELEASE_PRODS_INCLUDE
 -include $(TOP)/RELEASE.local
