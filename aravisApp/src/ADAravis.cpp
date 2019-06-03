@@ -153,6 +153,7 @@ protected:
     int AravisGetFeatures;
     int AravisHWImageMode;
     int AravisReset;
+    #define LAST_ARAVIS_CAMERA_PARAM AravisReset
 
 private:
     asynStatus allocBuffer();
@@ -532,8 +533,9 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
             || function == AravisPktResend   || function == AravisPktTimeout 
             || function == AravisHWImageMode) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
-    } else if (function < FIRST_ARAVIS_CAMERA_PARAM) {
+    } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
+        /* GenICam parameters are created after this constructor runs, so they are higher numbers */
         status = ADGenICam::writeInt32(pasynUser, value);
     /* generic feature lookup */
     } else {
