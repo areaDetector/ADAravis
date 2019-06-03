@@ -98,7 +98,10 @@ void arvFeature::writeEnumIndex(int value) {
 }
 
 std::string arvFeature::readEnumString() { 
-    return "";
+    const char *pString;
+    pString = arv_gc_feature_node_get_value_as_string(ARV_GC_FEATURE_NODE(mNode), NULL);
+    if (pString == 0) pString = "";
+    return std::string(pString);
 }
 
 void arvFeature::writeEnumString(std::string const &value) { 
