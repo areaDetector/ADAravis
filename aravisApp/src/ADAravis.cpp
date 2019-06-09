@@ -150,7 +150,6 @@ protected:
     int AravisResentPkts;
     int AravisLeftShift;
     int AravisConnection;
-    int AravisGetFeatures;
     int AravisHWImageMode;
     int AravisReset;
     #define LAST_ARAVIS_CAMERA_PARAM AravisReset
@@ -264,7 +263,7 @@ static void setIocRunningFlag(initHookState state) {
   * \param[in] stackSize The stack size for the asyn port driver thread if ASYN_CANBLOCK is set in asynFlags.
   */
 ADAravis::ADAravis(const char *portName, const char *cameraName,
-                           size_t maxMemory, int priority, int stackSize)
+                   size_t maxMemory, int priority, int stackSize)
 
     : ADGenICam(portName, maxMemory, priority, stackSize),
        camera(NULL),
@@ -273,7 +272,10 @@ ADAravis::ADAravis(const char *portName, const char *cameraName,
        device(NULL),
        genicam(NULL),
        payload(0),
-       pollingLoop(*this, "aravisPoll", stackSize, epicsThreadPriorityHigh)
+       pollingLoop(*this, 
+                   "aravisPoll", 
+                   stackSize>0 ? stackSize : epicsThreadGetStackSize(epicsThreadStackMedium), 
+                   epicsThreadPriorityHigh)
 {
     const char *functionName = "ADAravis";
     char tempString[256];
@@ -302,7 +304,6 @@ ADAravis::ADAravis(const char *portName, const char *cameraName,
     createParam("ARAVIS_PKT_TIMEOUT",    asynParamInt32,   &AravisPktTimeout);
     createParam("ARAVIS_LEFTSHIFT",      asynParamInt32,   &AravisLeftShift);
     createParam("ARAVIS_CONNECTION",     asynParamInt32,   &AravisConnection);
-    createParam("ARAVIS_GETFEATURES",    asynParamInt32,   &AravisGetFeatures);
     createParam("ARAVIS_HWIMAGEMODE",    asynParamInt32,   &AravisHWImageMode);
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
 
@@ -529,9 +530,8 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
             setIntegerParam(function, rbv);
             status = asynError;
         }
-    } else if (function == AravisGetFeatures || function == AravisFrameRetention
-            || function == AravisPktResend   || function == AravisPktTimeout 
-            || function == AravisHWImageMode) {
+    } else if (function == AravisFrameRetention || function == AravisPktResend
+               || function == AravisPktTimeout  || function == AravisHWImageMode) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
