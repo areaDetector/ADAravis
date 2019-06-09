@@ -1,9 +1,6 @@
-file "ADBase_settings.req", P=$(P), R=$(R)
-$(P)$(R)PKT_RESEND
-$(P)$(R)LEFTSHIFT
-$(P)$(R)GETFEATURES
-$(P)$(R)HWIMAGEMODE
-$(P)$(R)PKT_TIMEOUT
-$(P)$(R)FRAME_RETENTION
-
-
+file "ADGenICam_settings.req", P=$(P), R=$(R)
+$(P)$(R)ARPacketResendEnable
+$(P)$(R)ARLeftShift
+$(P)$(R)ARHWImageMode
+$(P)$(R)ARPacketTimeout
+$(P)$(R)ARFrameRetention
