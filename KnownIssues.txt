@@ -1,0 +1,12 @@
+Known issues:
+
+New cameras use Gain feature, which is a double.  Old cameras use GainRaw or GainRawChannelB which is an integer.  
+The ADGain parameter cannot be used for GainRawChannelB because the data types don't match, must use feature itself.
+
+Some cameras use an integer for the AcquireTime or AcquirePeriod features.  These won't work, the data types won't match, must use raw feature.
+
+Could fix this by checking for case when asynType is different from expected.
+
+BinningMode feature is only supported by raw feature.  No way to test, I don't have any cameras with that?
+aravisGige allowed setting the binning with ADBinX and ADBinY even if BinninMode only supported certain enums.
+
