@@ -107,8 +107,10 @@ std::string arvFeature::readEnumString() {
 void arvFeature::writeEnumString(std::string const &value) { 
 }
 
-std::string arvFeature::readString() { 
-    return arv_device_get_string_feature_value(mDevice, mFeatureName.c_str());
+std::string arvFeature::readString() {
+    const char *pString; 
+    pString = arv_device_get_string_feature_value(mDevice, mFeatureName.c_str());
+    return pString ? pString : "";
 }
 
 void arvFeature::writeString(std::string const & value) { 
