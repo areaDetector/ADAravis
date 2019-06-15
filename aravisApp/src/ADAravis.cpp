@@ -731,6 +731,10 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
     int y_offset = arv_buffer_get_image_y(buffer);
     size_t size = 0;
     arv_buffer_get_data(buffer, &size);
+    setIntegerParam(NDArraySizeX, width);
+    setIntegerParam(NDArraySizeY, height);
+    setIntegerParam(NDArraySize, (int)size);
+    setIntegerParam(NDDataType,dataType);
     switch (colorMode) {
         case NDColorModeMono:
         case NDColorModeBayer:
