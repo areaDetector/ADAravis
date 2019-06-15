@@ -1,0 +1,13 @@
+< envPaths
+errlogInit(20000)
+
+dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
+ADAravisApp_registerRecordDeviceDriver(pdbbase) 
+
+# Name of camera as reported by arv-tool-0.6
+#epicsEnvSet("CAMERA_NAME", "Point Grey Research-Blackfly S BFS-PGE-50S5C-18585624")
+epicsEnvSet("CAMERA_NAME", "164.54.160.117")
+epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/PGR_BlackflyS_50S5C.template")
+
+< st.cmd.base
+
