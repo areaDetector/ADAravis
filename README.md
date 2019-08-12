@@ -8,5 +8,5 @@ driver for
 [Aravis](https://github.com/AravisProject/aravis) library.
 
 Additional information:
-* [Documentation](https://cars.uchicago.edu/software/epics/ADAravis.html).
-* [Release notes and links to source and binary releases](RELEASE.md).
+* [Documentation](https://areadetector.github.io/master/ADAravis/ADAravis.html).
+* [Release notes](RELEASE.md).

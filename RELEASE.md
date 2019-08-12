@@ -14,7 +14,7 @@ Release Notes
 =============
 
 
-### R1-0 (XXX-November 2018)
+### R1-0 (August 12, 2019)
 ----
 * Initial release
 
