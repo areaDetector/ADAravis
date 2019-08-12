@@ -154,7 +154,7 @@ Known issues
 ------------
 
 - There is a serious performance problem when reading camera features using the aravis library.
-  This problem is documented in an `issue in ADGenICam on Github <https://github.com/areaDetector/ADGenICam/issues/1>`_
+  This problem is documented in an `issue in ADGenICam on Github <https://github.com/areaDetector/ADGenICam/issues/1>`_.
   The time to read all camera features on an FLIR Oryx camera using their Spinnaker SDK is 0.056 s, while it takes 11.8 s with aravis.
   The problem is that aravis is not caching register values as it should.
   An `issue has been created for this in the aravis repository on Github <https://github.com/AravisProject/aravis/issues/253>`_. 
