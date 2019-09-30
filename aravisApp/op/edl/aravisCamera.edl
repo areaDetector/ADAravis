@@ -4,7 +4,7 @@ major 4
 minor 0
 release 1
 x 353
-y 459
+y 496
 w 390
 h 130
 font "arial-bold-r-12.0"
@@ -85,7 +85,7 @@ x 90
 y 25
 w 95
 h 20
-controlPv "$(P)$(R)COMPLETED_RBV"
+controlPv "$(P)$(R)ARFramesCompleted"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -123,7 +123,7 @@ x 90
 y 50
 w 95
 h 20
-controlPv "$(P)$(R)FAILURES_RBV"
+controlPv "$(P)$(R)ARFrameFailures"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -161,7 +161,7 @@ x 90
 y 75
 w 95
 h 20
-controlPv "$(P)$(R)UNDERRUNS_RBV"
+controlPv "$(P)$(R)ARFrameUnderruns"
 fgColor index 16
 fgAlarm
 bgColor index 10
@@ -187,222 +187,6 @@ useDisplayBg
 value {
   "Underruns"
 }
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 100
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Reset Cam"
-}
-endObjectProperties
-
-# (Message Button)
-object activeMessageButtonClass
-beginObjectProperties
-major 4
-minor 1
-release 0
-x 290
-y 100
-w 90
-h 20
-fgColor index 25
-onColor index 3
-offColor index 3
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)RESET.PROC"
-pressValue "1"
-onLabel "Reconnect"
-offLabel "Reconnect"
-3d
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 50
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Left shift data"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 290
-y 50
-w 90
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)LEFTSHIFT"
-indicatorPv "$(P)$(R)LEFTSHIFT_RBV"
-font "arial-bold-r-12.0"
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 195
-y 100
-w 10
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "arial-bold-r-10.0"
-xPosOffset -100
-yPosOffset -85
-useFocus
-buttonLabel "?"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "aravisHelp"
-}
-setPosition {
-  0 "button"
-}
-symbols {
-  0 "desc0=Click this button if your camera stops communicating or acquiring.,desc1=It will do a reconnect,desc2='',desc3='',desc4='',desc5=''"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 195
-y 50
-w 10
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "arial-bold-r-10.0"
-xPosOffset -100
-yPosOffset -85
-useFocus
-buttonLabel "?"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "aravisHelp"
-}
-setPosition {
-  0 "button"
-}
-symbols {
-  0 "desc0=If set to Yes: 10 12 and 14 bit frames will be left shifted so they occupy the most,desc1=significant bits of the 16 bit frame,desc2='',desc3='',desc4='',desc5=''"
-}
-endObjectProperties
-
-# (Related Display)
-object relatedDisplayClass
-beginObjectProperties
-major 4
-minor 4
-release 0
-x 195
-y 25
-w 10
-h 20
-fgColor index 14
-bgColor index 3
-topShadowColor index 1
-botShadowColor index 11
-font "arial-bold-r-10.0"
-xPosOffset -100
-yPosOffset -85
-useFocus
-buttonLabel "?"
-numPvs 4
-numDsps 1
-displayFileName {
-  0 "aravisHelp"
-}
-setPosition {
-  0 "button"
-}
-symbols {
-  0 "desc0=Set to Yes to get feature value updates periodically ,desc1=(never more than one feature every 5ms),desc2=Set to No if you are getting performance issues,desc3='',desc4='',desc5=''"
-}
-endObjectProperties
-
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 205
-y 25
-w 85
-h 20
-font "arial-bold-r-12.0"
-fgColor index 14
-bgColor index 3
-useDisplayBg
-value {
-  "Get features"
-}
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 290
-y 25
-w 90
-h 20
-fgColor index 25
-bgColor index 3
-inconsistentColor index 0
-topShadowColor index 1
-botShadowColor index 11
-controlPv "$(P)$(R)GETFEATURES"
-indicatorPv "$(P)$(R)GETFEATURES_RBV"
-font "arial-bold-r-12.0"
 endObjectProperties
 
 # (Group)
@@ -447,6 +231,55 @@ visMin "3"
 visMax "4"
 endObjectProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 195
+y 25
+w 185
+h 70
+
+beginGroup
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 195
+y 75
+w 185
+h 20
+
+beginGroup
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 290
+y 75
+w 90
+h 20
+fgColor index 25
+onColor index 3
+offColor index 3
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)ARResetCamera.PROC"
+pressValue "1"
+onLabel "Reconnect"
+offLabel "Reconnect"
+3d
+font "arial-bold-r-12.0"
+endObjectProperties
+
 # (Static Text)
 object activeXTextClass
 beginObjectProperties
@@ -462,7 +295,7 @@ fgColor index 14
 bgColor index 3
 useDisplayBg
 value {
-  "HW Img Mode"
+  "Reset Cam"
 }
 endObjectProperties
 
@@ -494,9 +327,26 @@ setPosition {
   0 "button"
 }
 symbols {
-  0 "desc0=When this is On the image mode is set on the camera directly. On Off a software ,desc1=implementation is used.,desc2=Software implementation does not guarantee that only the configured number of ,desc3=acquisitions is triggered on the camera but it is faster and does not cap the ,desc4=number of frames in multiple mode with the register size on the camera.,desc5=''"
+  0 "desc0=Click this button if your camera stops communicating or acquiring.,desc1=It will do a reconnect,desc2='',desc3='',desc4='',desc5=''"
 }
 endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 195
+y 50
+w 185
+h 20
+
+beginGroup
 
 # (Menu Button)
 object activeMenuButtonClass
@@ -505,7 +355,7 @@ major 4
 minor 0
 release 0
 x 290
-y 75
+y 50
 w 90
 h 20
 fgColor index 25
@@ -513,8 +363,155 @@ bgColor index 3
 inconsistentColor index 0
 topShadowColor index 1
 botShadowColor index 11
-controlPv "$(P)$(R)HWIMAGEMODE"
-indicatorPv "$(P)$(R)HWIMAGEMODE_RBV"
+controlPv "$(P)$(R)ARHWImageMode"
+indicatorPv "$(P)$(R)ARHWImageMode_RBV"
 font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 50
+w 85
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "HW Img Mode"
+}
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 195
+y 50
+w 10
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "arial-bold-r-10.0"
+xPosOffset -100
+yPosOffset -85
+useFocus
+buttonLabel "?"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "aravisHelp"
+}
+setPosition {
+  0 "button"
+}
+symbols {
+  0 "desc0=When this is On the image mode is set on the camera directly. On Off a software ,desc1=implementation is used.,desc2=Software implementation does not guarantee that only the configured number of ,desc3=acquisitions is triggered on the camera but it is faster and does not cap the ,desc4=number of frames in multiple mode with the register size on the camera.,desc5=''"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 195
+y 25
+w 185
+h 20
+
+beginGroup
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 290
+y 25
+w 90
+h 20
+fgColor index 25
+bgColor index 3
+inconsistentColor index 0
+topShadowColor index 1
+botShadowColor index 11
+controlPv "$(P)$(R)ARLeftShift"
+indicatorPv "$(P)$(R)ARLeftShift_RBV"
+font "arial-bold-r-12.0"
+endObjectProperties
+
+# (Related Display)
+object relatedDisplayClass
+beginObjectProperties
+major 4
+minor 4
+release 0
+x 195
+y 25
+w 10
+h 20
+fgColor index 14
+bgColor index 3
+topShadowColor index 1
+botShadowColor index 11
+font "arial-bold-r-10.0"
+xPosOffset -100
+yPosOffset -85
+useFocus
+buttonLabel "?"
+numPvs 4
+numDsps 1
+displayFileName {
+  0 "aravisHelp"
+}
+setPosition {
+  0 "button"
+}
+symbols {
+  0 "desc0=If set to Yes: 10 12 and 14 bit frames will be left shifted so they occupy the most,desc1=significant bits of the 16 bit frame,desc2='',desc3='',desc4='',desc5=''"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 205
+y 25
+w 85
+h 20
+font "arial-bold-r-12.0"
+fgColor index 14
+bgColor index 3
+useDisplayBg
+value {
+  "Left shift data"
+}
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+endGroup
+
 endObjectProperties
 
