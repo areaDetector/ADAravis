@@ -386,6 +386,11 @@ asynStatus ADAravis::makeCameraObject() {
                     driverName, functionName);
         return asynError;
     }
+    /* Set the cache policy */
+#if ARAVIS_MINOR_VERSION > 6
+    arv_gc_set_register_cache_policy(this->genicam, ARV_REGISTER_CACHE_POLICY_DEBUG);
+#endif
+
     return asynSuccess;
 }
 
