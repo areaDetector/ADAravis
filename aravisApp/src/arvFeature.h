@@ -43,6 +43,7 @@ private:
     bool mIsImplemented;
     ArvGcNode *mNode;
     ArvDevice *mDevice;
+    GError *mError;
 
 
 };
