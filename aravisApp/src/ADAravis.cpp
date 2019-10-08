@@ -387,9 +387,7 @@ asynStatus ADAravis::makeCameraObject() {
         return asynError;
     }
     /* Set the cache policy */
-#if ARAVIS_MINOR_VERSION > 6
-    arv_gc_set_register_cache_policy(this->genicam, ARV_REGISTER_CACHE_POLICY_DEBUG);
-#endif
+    arv_gc_set_register_cache_policy(this->genicam, ARV_REGISTER_CACHE_POLICY_ENABLE);
 
     return asynSuccess;
 }
@@ -514,6 +512,7 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     asynStatus status = asynSuccess;
     epicsInt32 rbv;
     const char  *reasonName = "unknownReason";
+    static const char *functionName = "writeInt32";
     getParamName(0, function, &reasonName);
 
     /* Set the parameter and readback in the parameter library.  This may be overwritten when we read back the
@@ -541,6 +540,8 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
         /* GenICam parameters are created after this constructor runs, so they are higher numbers */
+asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER, 
+"%s::%s  arv_gc_get_register_cache_policy = %d\n", driverName, functionName, arv_gc_get_register_cache_policy(this->genicam));
         status = ADGenICam::writeInt32(pasynUser, value);
     /* generic feature lookup */
     } else {
@@ -858,8 +859,8 @@ asynStatus ADAravis::startCapture() {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME);
     } else if (hwImageMode && (imageMode == ADImageMultiple) && mGCFeatureSet.getByName("AcquisitionFrameCount")) {
         getIntegerParam(ADNumImages, &numImages);
-        arv_device_set_string_feature_value(this->device, "AcquisitionMode", "MultiFrame");
-        arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages);
+        arv_device_set_string_feature_value(this->device, "AcquisitionMode", "MultiFrame", NULL);
+        arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages, NULL);
     } else {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_CONTINUOUS);
     }
