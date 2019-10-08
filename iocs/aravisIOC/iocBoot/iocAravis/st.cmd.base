@@ -25,8 +25,8 @@ epicsEnvSet("NELEMENTS", "12592912")
 # aravisConfig(const char *portName, const char *cameraName, size_t maxMemory, int priority, int stackSize)
 aravisConfig("$(PORT)", "$(CAMERA_NAME)", 0, 0, 0)
 asynSetTraceIOMask($(PORT), 0, 2)
-#asynSetTraceMask($(PORT), 0, TRACE_ERROR|TRACE_WARNING)
-#asynSetTraceFile($(PORT), 0, "asynTrace.out")
+asynSetTraceMask($(PORT), 0, TRACE_ERROR|TRACEIO_DRIVER)
+asynSetTraceFile($(PORT), 0, "stdout")
 
 # Main database
 dbLoadRecords("$(ADARAVIS)/db/aravisCamera.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT)")
