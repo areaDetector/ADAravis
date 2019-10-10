@@ -540,8 +540,6 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
         /* GenICam parameters are created after this constructor runs, so they are higher numbers */
-asynPrint(pasynUserSelf, ASYN_TRACEIO_DRIVER, 
-"%s::%s  arv_gc_get_register_cache_policy = %d\n", driverName, functionName, arv_gc_get_register_cache_policy(this->genicam));
         status = ADGenICam::writeInt32(pasynUser, value);
     /* generic feature lookup */
     } else {
