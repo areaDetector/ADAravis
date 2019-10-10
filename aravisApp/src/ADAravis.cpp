@@ -113,9 +113,8 @@ const char * ArvBufferStatusToString( ArvBufferStatus buffer_status )
 class ADAravis : public ADGenICam, epicsThreadRunable {
 public:
     /* Constructor */
-    ADAravis(const char *portName, const char *cameraName,
-                size_t maxMemory,
-                int priority, int stackSize);
+    ADAravis(const char *portName, const char *cameraName, int enableCaching,
+                size_t maxMemory, int priority, int stackSize);
 
     /* These are the methods that we override from ADDriver */
     virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
@@ -169,6 +168,7 @@ private:
     char *cameraName;
     unsigned int featureIndex;
     int payload;
+    int mEnableCaching;
     epicsThread pollingLoop;
 };
 
@@ -255,6 +255,8 @@ static void setIocRunningFlag(initHookState state) {
   * and sets reasonable default values for parameters defined in this class, asynNDArrayDriver and ADDriver.
   * \param[in] portName The name of the asyn port driver to be created.
   * \param[in] cameraName The name of the camera, \<vendor\>-\<serial#\>, as returned by arv-show-devices
+  * \param[in] enableCaching Flag to enable (1) or disable (0) register caching in aravis. 
+               Performance is much better when caching is enable, but some cameras may not properly implement this.
   * \param[in] maxBuffers The maximum number of NDArray buffers that the NDArrayPool for this driver is
   *            allowed to allocate. Set this to -1 to allow an unlimited number of buffers.
   * \param[in] maxMemory The maximum amount of memory that the NDArrayPool for this driver is
@@ -262,7 +264,7 @@ static void setIocRunningFlag(initHookState state) {
   * \param[in] priority The thread priority for the asyn port driver thread if ASYN_CANBLOCK is set in asynFlags.
   * \param[in] stackSize The stack size for the asyn port driver thread if ASYN_CANBLOCK is set in asynFlags.
   */
-ADAravis::ADAravis(const char *portName, const char *cameraName,
+ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCaching,
                    size_t maxMemory, int priority, int stackSize)
 
     : ADGenICam(portName, maxMemory, priority, stackSize),
@@ -272,6 +274,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName,
        device(NULL),
        genicam(NULL),
        payload(0),
+       mEnableCaching(enableCaching),
        pollingLoop(*this, 
                    "aravisPoll", 
                    stackSize>0 ? stackSize : epicsThreadGetStackSize(epicsThreadStackMedium), 
@@ -387,7 +390,7 @@ asynStatus ADAravis::makeCameraObject() {
         return asynError;
     }
     /* Set the cache policy */
-    arv_gc_set_register_cache_policy(this->genicam, ARV_REGISTER_CACHE_POLICY_ENABLE);
+    arv_gc_set_register_cache_policy(this->genicam, mEnableCaching ? ARV_REGISTER_CACHE_POLICY_ENABLE : ARV_REGISTER_CACHE_POLICY_DISABLE);
 
     return asynSuccess;
 }
@@ -932,29 +935,31 @@ asynStatus ADAravis::lookupPixelFormat(int colorMode, int dataType, int bayerFor
 
 
 /** Configuration command, called directly or from iocsh */
-extern "C" int ADAravisConfig(const char *portName, const char *cameraName,
+extern "C" int ADAravisConfig(const char *portName, const char *cameraName, int enableCaching,
                               size_t maxMemory, int priority, int stackSize)
 {
-    new ADAravis(portName, cameraName, maxMemory, priority, stackSize);
+    new ADAravis(portName, cameraName, enableCaching, maxMemory, priority, stackSize);
     return(asynSuccess);
 }
 
 /** Code for iocsh registration */
 static const iocshArg ADAravisConfigArg0 = {"Port name", iocshArgString};
 static const iocshArg ADAravisConfigArg1 = {"Camera name", iocshArgString};
-static const iocshArg ADAravisConfigArg2 = {"maxMemory", iocshArgInt};
-static const iocshArg ADAravisConfigArg3 = {"priority", iocshArgInt};
-static const iocshArg ADAravisConfigArg4 = {"stackSize", iocshArgInt};
+static const iocshArg ADAravisConfigArg2 = {"enable caching", iocshArgInt};
+static const iocshArg ADAravisConfigArg3 = {"maxMemory", iocshArgInt};
+static const iocshArg ADAravisConfigArg4 = {"priority", iocshArgInt};
+static const iocshArg ADAravisConfigArg5 = {"stackSize", iocshArgInt};
 static const iocshArg * const ADAravisConfigArgs[] =  {&ADAravisConfigArg0,
                                                        &ADAravisConfigArg1,
                                                        &ADAravisConfigArg2,
                                                        &ADAravisConfigArg3,
-                                                       &ADAravisConfigArg4};
-static const iocshFuncDef configADAravis = {"aravisConfig", 5, ADAravisConfigArgs};
+                                                       &ADAravisConfigArg4,
+                                                       &ADAravisConfigArg5};
+static const iocshFuncDef configADAravis = {"aravisConfig", 6, ADAravisConfigArgs};
 static void configADAravisCallFunc(const iocshArgBuf *args)
 {
     ADAravisConfig(args[0].sval, args[1].sval, args[2].ival, 
-                   args[3].ival, args[4].ival);
+                   args[3].ival, args[4].ival, args[5].ival);
 }
 
 
