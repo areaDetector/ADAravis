@@ -512,7 +512,7 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     asynStatus status = asynSuccess;
     epicsInt32 rbv;
     const char  *reasonName = "unknownReason";
-    static const char *functionName = "writeInt32";
+    //static const char *functionName = "writeInt32";
     getParamName(0, function, &reasonName);
 
     /* Set the parameter and readback in the parameter library.  This may be overwritten when we read back the
