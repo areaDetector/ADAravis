@@ -4,9 +4,23 @@ errlogInit(20000)
 dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
 ADAravisApp_registerRecordDeviceDriver(pdbbase) 
 
-# Name of camera as reported by arv-tool-0.6
-#epicsEnvSet("CAMERA_NAME", "Point Grey Research-Blackfly S BFS-PGE-13Y3M-17165235")
-epicsEnvSet("CAMERA_NAME", "164.54.160.215")
+# Name of camera as reported by arv-tool
+epicsEnvSet("CAMERA_NAME", "Point Grey Research-Blackfly S BFS-PGE-13Y3M-17165235")
+#epicsEnvSet("CAMERA_NAME", "164.54.160.215")
+
+# The maximum image width; used for row profiles in the NDPluginStats plugin
+epicsEnvSet("XSIZE",  "1280")
+
+# The maximum image height; used for column profiles in the NDPluginStats plugin
+epicsEnvSet("YSIZE",  "1024")
+
+# Define NELEMENTS to be enough for a 1280x1024 mono image
+epicsEnvSet("NELEMENTS", "1310720")
+
+# Enable register caching
+epicsEnvSet("ENABLE_CACHING", "1")
+
+# The database file
 epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/PGR_BlackflyS_13Y3M.template")
 
 < st.cmd.base

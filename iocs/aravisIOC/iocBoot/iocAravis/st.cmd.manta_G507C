@@ -4,10 +4,22 @@ errlogInit(20000)
 dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
 ADAravisApp_registerRecordDeviceDriver(pdbbase) 
 
-# Name of camera as reported by arv-tool-0.6
+# Name of camera as reported by arv-tool
 epicsEnvSet("CAMERA_NAME", "Allied Vision Technologies-Manta G-507C (E0022705)-50-0503419258")
 
+# The maximum image width; used for row profiles in the NDPluginStats plugin
+epicsEnvSet("XSIZE",  "2464")
+
+# The maximum image height; used for column profiles in the NDPluginStats plugin
+epicsEnvSet("YSIZE",  "2056")
+
+# Define NELEMENTS to be enough for a 2464x2056x3 (color) image
+epicsEnvSet("NELEMENTS", "15197952")
+
+# Enable register caching
+epicsEnvSet("ENABLE_CACHING", "1")
+
+# The database file
 epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/AVT_Manta_G507C.template")
 
 < st.cmd.base
-

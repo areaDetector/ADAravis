@@ -4,10 +4,22 @@ errlogInit(20000)
 dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
 ADAravisApp_registerRecordDeviceDriver(pdbbase) 
 
-# Name of camera as reported by arv-tool-0.6
+# Name of camera as reported by arv-tool
 epicsEnvSet("CAMERA_NAME", "FLIR-Oryx ORX-10G-51S5M-18011754")
 
+# The maximum image width; used for row profiles in the NDPluginStats plugin
+epicsEnvSet("XSIZE",  "2448")
+
+# The maximum image height; used for column profiles in the NDPluginStats plugin
+epicsEnvSet("YSIZE",  "2048")
+
+# Define NELEMENTS to be enough for a 2448x2048 mono image
+epicsEnvSet("NELEMENTS", "5013504")
+
+# Enable register caching
+epicsEnvSet("ENABLE_CACHING", "1")
+
+# The database file
 epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/FLIR_ORX_10G_51S5.template")
 
 < st.cmd.base
-
