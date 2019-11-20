@@ -6,29 +6,18 @@ epicsEnvSet("PREFIX", "13ARV1:")
 epicsEnvSet("PORT",   "ARV1")
 # Really large queue so we can stream to disk at full camera speed
 epicsEnvSet("QSIZE",  "2000")   
-# The maximim image width; used for row profiles in the NDPluginStats plugin
-epicsEnvSet("XSIZE",  "2048")
-# The maximim image height; used for column profiles in the NDPluginStats plugin
-epicsEnvSet("YSIZE",  "2048")
 # The maximum number of time series points in the NDPluginStats plugin
 epicsEnvSet("NCHANS", "2048")
 # The maximum number of frames buffered in the NDPluginCircularBuff plugin
 epicsEnvSet("CBUFFS", "500")
 # The search path for database files
-# This is for Windows
-#epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db;$(ADGENICAM)/db;$(ADARAVIS)/db")
-# This is for Linux
 epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADGENICAM)/db:$(ADARAVIS)/db")
-# Define NELEMENTS to be enough for a 2048x2048x3 (color) image
-epicsEnvSet("NELEMENTS", "12592912")
 
-# aravisConfig(const char *portName, const char *cameraName, size_t maxMemory, int priority, int stackSize)
-aravisConfig("$(PORT)", "$(CAMERA_NAME)", 0, 0, 0)
+# aravisConfig(const char *portName, const char *cameraName, int enableCaching, size_t maxMemory, int priority, int stackSize)
+aravisConfig("$(PORT)", "$(CAMERA_NAME)", $(ENABLE_CACHING), 0, 0, 0)
 asynSetTraceIOMask($(PORT), 0, 2)
-# Set ASYN_TRACE_WARNING and ASYN_TRACE_ERROR
-#asynSetTraceMask($(PORT), 0, 0xff)
-#asynSetTraceFile($(PORT), 0, "asynTrace.out")
-#asynSetTraceInfoMask($(PORT), 0, 0xf)
+#asynSetTraceMask($(PORT), 0, TRACE_ERROR|TRACEIO_DRIVER)
+#asynSetTraceFile($(PORT), 0, "aravisDebug.txt")
 
 # Main database
 dbLoadRecords("$(ADARAVIS)/db/aravisCamera.template", "P=$(PREFIX),R=cam1:,PORT=$(PORT)")
@@ -52,11 +41,3 @@ iocInit()
 
 # save things every thirty seconds
 create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
-
-# Wait for enum callbacks to complete
-epicsThreadSleep(1.0)
-
-# Wait for callbacks on the property limits (DRVL, DRVH) to complete
-epicsThreadSleep(1.0)
-
-

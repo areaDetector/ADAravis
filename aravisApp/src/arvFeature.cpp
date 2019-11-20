@@ -37,18 +37,18 @@ bool arvFeature::isWritable() {
 }
 
 int arvFeature::readInteger() { 
-    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str());
+    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
 int arvFeature::readIntegerMin() {
     gint64 min, max;
-    arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max);    
+    arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return min;
 }
 
 int arvFeature::readIntegerMax() {
     gint64 min, max;
-    arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max);    
+    arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return max;
 }
 
@@ -58,43 +58,43 @@ int arvFeature::readIncrement() {
 }
 
 void arvFeature::writeInteger(int value) { 
-    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value);
+    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value, NULL);
 }
 
 bool arvFeature::readBoolean() { 
-    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str());
+    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
 void arvFeature::writeBoolean(bool value) { 
-    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value ? 1 : 0);
+    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value ? 1 : 0, NULL);
 }
 
 double arvFeature::readDouble() { 
-    return arv_device_get_float_feature_value(mDevice, mFeatureName.c_str());
+    return arv_device_get_float_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
 void arvFeature::writeDouble(double value) { 
-    arv_device_set_float_feature_value(mDevice, mFeatureName.c_str(), value);
+    arv_device_set_float_feature_value(mDevice, mFeatureName.c_str(), value, NULL);
 }
 
 double arvFeature::readDoubleMin() {
     double min, max;
-    arv_device_get_float_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max);    
+    arv_device_get_float_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return min;
 }
 
 double arvFeature::readDoubleMax() {
     double min, max;
-    arv_device_get_float_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max);    
+    arv_device_get_float_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return max;
 }
 
 int arvFeature::readEnumIndex() {
-    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str());
+    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
 void arvFeature::writeEnumIndex(int value) { 
-    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value);
+    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value, NULL);
 }
 
 std::string arvFeature::readEnumString() { 
@@ -109,23 +109,26 @@ void arvFeature::writeEnumString(std::string const &value) {
 
 std::string arvFeature::readString() {
     const char *pString; 
-    pString = arv_device_get_string_feature_value(mDevice, mFeatureName.c_str());
+    pString = arv_device_get_string_feature_value(mDevice, mFeatureName.c_str(), NULL);
     return pString ? pString : "";
 }
 
 void arvFeature::writeString(std::string const & value) { 
-    arv_device_set_string_feature_value(mDevice, mFeatureName.c_str(), value.c_str());
+    arv_device_set_string_feature_value(mDevice, mFeatureName.c_str(), value.c_str(), NULL);
 }
 
 void arvFeature::writeCommand() { 
-    arv_device_execute_command(mDevice, mFeatureName.c_str());
+    arv_device_execute_command(mDevice, mFeatureName.c_str(), NULL);
 }
 
 void arvFeature::readEnumChoices(std::vector<std::string>& enumStrings, std::vector<int>& enumValues) {
     guint numEnums;
     ArvGcEnumeration *enumeration = (ARV_GC_ENUMERATION (mNode));
+//printf("calling arv_gc_enumeration_get_available_int_values for %s\n", mFeatureName.c_str());
     gint64 *values = arv_gc_enumeration_get_available_int_values(enumeration, &numEnums, NULL);
+//printf("calling arv_gc_enumeration_get_available_string_values for %s\n", mFeatureName.c_str());
     const char **strings = arv_gc_enumeration_get_available_string_values(enumeration, &numEnums, NULL);
+//printf("done calling arv_gc_enumeration_get_available_string_values for %s, numEnums=%u\n", mFeatureName.c_str(), numEnums);
     for (unsigned int i=0; i<numEnums; i++) {
         enumStrings.push_back(strings[i]);
         enumValues.push_back(values[i]);

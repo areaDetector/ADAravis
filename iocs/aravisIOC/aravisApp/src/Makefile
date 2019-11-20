@@ -19,9 +19,9 @@ PROD_LIBS += ADAravis
 PROD_LIBS += ADGenICam
 ifdef ARAVIS_LIB
   aravis-0.6_DIR = $(ARAVIS_LIB)
-  PROD_LIBS     += aravis-0.6
+  PROD_LIBS     += aravis-0.8
 else
-  PROD_SYS_LIBS += aravis-0.6
+  PROD_SYS_LIBS += aravis-0.8
 endif
 
 PROD_SYS_LIBS += giomm-2.4
