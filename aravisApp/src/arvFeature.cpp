@@ -28,11 +28,13 @@ bool arvFeature::isAvailable() {
 }
 
 bool arvFeature::isReadable() {
-    // Note sure how to get this with Aravis 
+    // Not sure how to get this with Aravis 
+    if (!mIsImplemented) return false;
     return true;
 }
 
 bool arvFeature::isWritable() { 
+    if (!mIsImplemented) return false;
     return !arv_gc_feature_node_is_locked(ARV_GC_FEATURE_NODE(mNode), NULL);
 }
 
