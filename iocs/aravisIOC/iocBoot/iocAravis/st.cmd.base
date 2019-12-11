@@ -16,7 +16,7 @@ epicsEnvSet("EPICS_DB_INCLUDE_PATH", "$(ADCORE)/db:$(ADGENICAM)/db:$(ADARAVIS)/d
 # aravisConfig(const char *portName, const char *cameraName, int enableCaching, size_t maxMemory, int priority, int stackSize)
 aravisConfig("$(PORT)", "$(CAMERA_NAME)", $(ENABLE_CACHING), 0, 0, 0)
 asynSetTraceIOMask($(PORT), 0, 2)
-#asynSetTraceMask($(PORT), 0, TRACE_ERROR|TRACEIO_DRIVER)
+#asynSetTraceMask($(PORT), 0, TRACE_ERROR|TRACEIO_DRIVER|TRACE_FLOW)
 #asynSetTraceFile($(PORT), 0, "aravisDebug.txt")
 
 # Main database
