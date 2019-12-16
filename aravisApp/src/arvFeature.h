@@ -19,11 +19,11 @@ public:
     virtual bool isAvailable(void);
     virtual bool isReadable(void);
     virtual bool isWritable(void);
-    virtual int readInteger(void);
-    virtual int readIntegerMin(void);
-    virtual int readIntegerMax(void);
-    virtual int readIncrement(void);
-    virtual void writeInteger(int value);
+    virtual epicsInt64 readInteger(void);
+    virtual epicsInt64 readIntegerMin(void);
+    virtual epicsInt64 readIntegerMax(void);
+    virtual epicsInt64 readIncrement(void);
+    virtual void writeInteger(epicsInt64 value);
     virtual bool readBoolean(void);
     virtual void writeBoolean (bool value);
     virtual double readDouble(void);

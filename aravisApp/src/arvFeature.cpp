@@ -38,28 +38,28 @@ bool arvFeature::isWritable() {
     return !arv_gc_feature_node_is_locked(ARV_GC_FEATURE_NODE(mNode), NULL);
 }
 
-int arvFeature::readInteger() { 
+epicsInt64 arvFeature::readInteger() { 
     return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
-int arvFeature::readIntegerMin() {
+epicsInt64 arvFeature::readIntegerMin() {
     gint64 min, max;
     arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return min;
 }
 
-int arvFeature::readIntegerMax() {
+epicsInt64 arvFeature::readIntegerMax() {
     gint64 min, max;
     arv_device_get_integer_feature_bounds(mDevice, mFeatureName.c_str(), &min, &max, NULL);    
     return max;
 }
 
-int arvFeature::readIncrement() { 
+epicsInt64 arvFeature::readIncrement() { 
     // Not sure how to get the from Aravis
     return 1;
 }
 
-void arvFeature::writeInteger(int value) { 
+void arvFeature::writeInteger(epicsInt64 value) { 
     arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value, NULL);
 }
 
