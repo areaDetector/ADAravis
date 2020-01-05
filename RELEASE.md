@@ -13,7 +13,7 @@ files respectively, in the configure/ directory of the appropriate release of th
 Release Notes
 =============
 
-### R1-2 (December XXX, 2019)
+### R1-2 (January 5, 2020)
 ----
 * Change arvFeature support for GenICam features from int (32-bit) to epicsInt64 (64-bit)
 
