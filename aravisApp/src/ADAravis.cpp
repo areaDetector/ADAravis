@@ -206,6 +206,7 @@ static void newBufferCallback (ArvStream *stream, ADAravis *pPvt) {
     int status;
     static int  nConsecutiveBadFrames   = 0;
     buffer = arv_stream_try_pop_buffer(stream);
+    printf("newBufferCallback buffer=%p\n", buffer);
     if (buffer == NULL)    return;
     ArvBufferStatus buffer_status = arv_buffer_get_status(buffer);
     if (buffer_status == ARV_BUFFER_STATUS_SUCCESS /*|| buffer->status == ARV_BUFFER_STATUS_MISSING_PACKETS*/) {
@@ -616,6 +617,8 @@ asynStatus ADAravis::allocBuffer() {
 
     buffer = arv_buffer_new_full(this->payload, pRaw->pData, (void *)pRaw, destroyBuffer);
     arv_stream_push_buffer (this->stream, buffer);
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+          "%s:%s: allocated new buffer OK\n", driverName, functionName);
     return asynSuccess;
 }
 
@@ -640,6 +643,8 @@ void ADAravis::run() {
         } else {
             /* Got a buffer, so lock up and process it */
             this->lock();
+            asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                  "%s:%s: received a buffer from the message queue\n", driverName, functionName);
             getIntegerParam(ADAcquire, &acquire);
             if (acquire) {
                 this->processBuffer(buffer);
@@ -681,7 +686,9 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
     guint64 n_completed_buffers, n_failures, n_underruns;
     NDArray *pRaw;
 
-    /* Get the current parameters */
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+          "%s:%s: enter\n", driverName, functionName);
+  /* Get the current parameters */
     getIntegerParam(NDArrayCounter, &imageCounter);
     getIntegerParam(ADNumImages, &numImages);
     getIntegerParam(ADNumImagesCounter, &numImagesCounter);
