@@ -887,6 +887,8 @@ asynStatus ADAravis::startCapture() {
     }
 
     // Start the camera acquiring
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+          "%s:%s: called arv_camera_start_acquisition\n", driverName, functionName);
     arv_camera_start_acquisition (this->camera);
     return asynSuccess;
 }
