@@ -28,8 +28,9 @@ Release Notes
     all of the features when any feature was changed.
   * The constructor and aravisConfig have a new enableCaching argument to enable or disable register caching.
     It should be set to 1 except perhaps for some unusual cameras that do not correctly handle register caching.
-* This release requires a recent release of the aravis package, ARAVIS_0_7_2 or later.
-  ARAVIS_0_7_2 is described as an "unstable" release.  There should be a stable 0.8.x in the near future.
+* This release requires release ARAVIS_0_7_2 aravis package. ARAVIS_0_7_2 is described as an "unstable" release.  
+  Note that more recent releases (e.g ARAVIS_0_7_3) **cannot** be used because the API has changed from ARAVIS_0_7_2.
+  Hopefully there will be a stable 0.8.x release in the near future.  
   * This release of aravis adds support for register caching.
   * This release of aravis has changes to the aravis API for several functions.
 
