@@ -182,8 +182,9 @@ GenICamFeature *ADAravis::createFeature(GenICamFeatureSet *set,
 static void aravisShutdown(void* arg) {
     ADAravis *pPvt = (ADAravis *) arg;
     ArvCamera *cam = pPvt->camera;
+    GError *error;
     printf("ADAravis: Stopping %s... ", pPvt->portName);
-    arv_camera_stop_acquisition(cam);
+    arv_camera_stop_acquisition(cam, &error);
     pPvt->connectionValid = 0;
     epicsThreadSleep(0.1);
     pPvt->camera = NULL;
@@ -349,6 +350,8 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
 
 asynStatus ADAravis::makeCameraObject() {
     const char *functionName = "makeCameraObject";
+    GError *error;
+
     /* remove old camera if it exists */
     if (this->camera != NULL) {
         g_object_unref(this->camera);
@@ -360,7 +363,7 @@ asynStatus ADAravis::makeCameraObject() {
 
     /* connect to camera */
     printf ("ADAravis: Looking for camera '%s'... \n", this->cameraName);
-    this->camera = arv_camera_new (this->cameraName);
+    this->camera = arv_camera_new (this->cameraName, &error);
     if (this->camera == NULL) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
                     "%s:%s: No camera found\n",
@@ -377,7 +380,7 @@ asynStatus ADAravis::makeCameraObject() {
     }
     if (ARV_IS_GV_DEVICE(this->device)) {
         // Automatically determine optimum packet size
-        arv_gv_device_auto_packet_size(ARV_GV_DEVICE(this->device));
+        arv_gv_device_auto_packet_size(ARV_GV_DEVICE(this->device), &error);
         // Uncomment this line to set jumbo packets
         //arv_gv_device_set_packet_size(ARV_GV_DEVICE(this->device), 9000);
     }
@@ -396,7 +399,8 @@ asynStatus ADAravis::makeCameraObject() {
 }
 
 asynStatus ADAravis::makeStreamObject() {
-    const char *functionName = "makeStreamObject";    
+    const char *functionName = "makeStreamObject";
+    GError *error;    
     asynStatus status = asynSuccess;
     
     /* remove old stream if it exists */
@@ -405,7 +409,7 @@ asynStatus ADAravis::makeStreamObject() {
         g_object_unref(this->stream);
         this->stream = NULL;
     }
-    this->stream = arv_camera_create_stream (this->camera, NULL, NULL);
+    this->stream = arv_camera_create_stream (this->camera, NULL, NULL, &error);
     if (this->stream == NULL) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
                     "%s:%s: Making stream failed, retrying in 5s...\n",
@@ -415,7 +419,7 @@ asynStatus ADAravis::makeStreamObject() {
         status = this->makeCameraObject();
         if (status != asynSuccess) return (asynStatus) status;
         /* Make the stream */
-        this->stream = arv_camera_create_stream (this->camera, NULL, NULL);
+        this->stream = arv_camera_create_stream (this->camera, NULL, NULL, &error);
     }
     if (this->stream == NULL) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
@@ -453,12 +457,13 @@ asynStatus ADAravis::makeStreamObject() {
 
 asynStatus ADAravis::connectToCamera() {
     const char *functionName = "connectToCamera";
+    GError *error;
     int status = asynSuccess;
 
     /* stop old camera if it exists */
     this->connectionValid = 0;
     if (this->camera != NULL) {
-        arv_camera_stop_acquisition(this->camera);
+        arv_camera_stop_acquisition(this->camera, &error);
     }
 
     /* Tell areaDetector it is no longer acquiring */
@@ -469,12 +474,12 @@ asynStatus ADAravis::connectToCamera() {
     if (status) return (asynStatus) status;
 
     /* Make sure it's stopped */
-    arv_camera_stop_acquisition(this->camera);
+    arv_camera_stop_acquisition(this->camera, &error);
     status |= setIntegerParam(ADStatus, ADStatusIdle);
     
     /* Check the tick frequency */
     if (ARV_IS_GV_DEVICE(this->device)) {
-        guint64 freq = arv_gv_device_get_timestamp_tick_frequency(ARV_GV_DEVICE(this->device));
+        guint64 freq = arv_gv_device_get_timestamp_tick_frequency(ARV_GV_DEVICE(this->device), &error);
         printf("ADAravis: Your tick frequency is %" G_GUINT64_FORMAT "\n", freq);
         if (freq > 0) {
             printf("So your timestamp resolution is %f ns\n", 1.e9/freq);
@@ -843,7 +848,9 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
 
 asynStatus ADAravis::stopCapture() {
     /* Stop the camera */
-    arv_camera_stop_acquisition(this->camera);
+    GError *error;
+
+    arv_camera_stop_acquisition(this->camera, &error);
     setIntegerParam(ADStatus, ADStatusIdle);
     /* Tear down the old stream and make a new one */
     return this->makeStreamObject();
@@ -851,25 +858,26 @@ asynStatus ADAravis::stopCapture() {
 
 asynStatus ADAravis::startCapture() {
     int imageMode, numImages, hwImageMode;
+    GError *error;
     const char *functionName = "start";
     
     getIntegerParam(AravisHWImageMode, &hwImageMode);
     getIntegerParam(ADImageMode, &imageMode);
 
     if (hwImageMode && imageMode == ADImageSingle) {
-        arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME);
+        arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME, &error);
     } else if (hwImageMode && (imageMode == ADImageMultiple) && mGCFeatureSet.getByName("AcquisitionFrameCount")) {
         getIntegerParam(ADNumImages, &numImages);
         arv_device_set_string_feature_value(this->device, "AcquisitionMode", "MultiFrame", NULL);
         arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages, NULL);
     } else {
-        arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_CONTINUOUS);
+        arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_CONTINUOUS, &error);
     }
     setIntegerParam(ADNumImagesCounter, 0);
     setIntegerParam(ADStatus, ADStatusAcquire);
 
     /* fill the queue */
-    this->payload = arv_camera_get_payload(this->camera);
+    this->payload = arv_camera_get_payload(this->camera, &error);
     for (int i=0; i<NRAW; i++) {
         if (this->allocBuffer() != asynSuccess) {
             asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
@@ -880,7 +888,7 @@ asynStatus ADAravis::startCapture() {
     }
 
     // Start the camera acquiring
-    arv_camera_start_acquisition (this->camera);
+    arv_camera_start_acquisition (this->camera, &error);
     return asynSuccess;
 }
 
