@@ -127,9 +127,9 @@ void arvFeature::readEnumChoices(std::vector<std::string>& enumStrings, std::vec
     guint numEnums;
     ArvGcEnumeration *enumeration = (ARV_GC_ENUMERATION (mNode));
 //printf("calling arv_gc_enumeration_get_available_int_values for %s\n", mFeatureName.c_str());
-    gint64 *values = arv_gc_enumeration_get_available_int_values(enumeration, &numEnums, NULL);
+    gint64 *values = arv_gc_enumeration_dup_available_int_values(enumeration, &numEnums, NULL);
 //printf("calling arv_gc_enumeration_get_available_string_values for %s\n", mFeatureName.c_str());
-    const char **strings = arv_gc_enumeration_get_available_string_values(enumeration, &numEnums, NULL);
+    const char **strings = arv_gc_enumeration_dup_available_string_values(enumeration, &numEnums, NULL);
 //printf("done calling arv_gc_enumeration_get_available_string_values for %s, numEnums=%u\n", mFeatureName.c_str(), numEnums);
     for (unsigned int i=0; i<numEnums; i++) {
         enumStrings.push_back(strings[i]);
