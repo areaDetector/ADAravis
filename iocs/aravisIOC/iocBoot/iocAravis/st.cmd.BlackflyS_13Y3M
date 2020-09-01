@@ -25,3 +25,4 @@ epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/PGR_BlackflyS_13Y3M.template")
 
 < st.cmd.base
 
+dbpf $(PREFIX)cam1:GC_Gamma.PROC 1
