@@ -128,8 +128,9 @@ public:
     /* This is the method we override from epicsThreadRunable */
     void run();
 
-    /* This should be private, but is used in the aravis callback so must be public */
+    /* These should be private, but are used in the aravis callback so must be public */
     epicsMessageQueueId msgQId;
+    void newBufferCallback(ArvStream *stream);
 
     /** Used by epicsAtExit */
     ArvCamera *camera;
@@ -201,34 +202,42 @@ static void destroyBuffer(gpointer data){
 }
 
 /** Called by aravis when a new buffer is produced */
-static void newBufferCallback (ArvStream *stream, ADAravis *pPvt) {
+static void newBufferCallbackC(ArvStream *stream, ADAravis *pPvt) {
+    pPvt->newBufferCallback(stream);
+}
+
+void ADAravis::newBufferCallback(ArvStream *stream) {
     ArvBuffer *buffer;
     int status;
-    static int  nConsecutiveBadFrames   = 0;
+    static int nConsecutiveBadFrames = 0;
+    static const char *functionName = "newBufferCallback";
+
     buffer = arv_stream_try_pop_buffer(stream);
     if (buffer == NULL)    return;
     ArvBufferStatus buffer_status = arv_buffer_get_status(buffer);
     if (buffer_status == ARV_BUFFER_STATUS_SUCCESS /*|| buffer->status == ARV_BUFFER_STATUS_MISSING_PACKETS*/) {
         nConsecutiveBadFrames = 0;
-        status = epicsMessageQueueTrySend(pPvt->msgQId,
+        status = epicsMessageQueueTrySend(this->msgQId,
                 &buffer,
                 sizeof(&buffer));
         if (status) {
-            // printf as pPvt->pasynUserSelf for asynPrint is protected
-            printf("Message queue full, dropped buffer\n");
+            asynPrint(pasynUserSelf, ASYN_TRACE_ERROR, 
+            "%s::%s message queue full, dropped buffer\n", driverName, functionName);
             arv_stream_push_buffer (stream, buffer);
         }
     } else {
-        // printf as pPvt->pasynUserSelf for asynPrint is protected
         arv_stream_push_buffer (stream, buffer);
 
         nConsecutiveBadFrames++;
         if ( nConsecutiveBadFrames < 10 )
-            printf("Bad frame status: %s\n", ArvBufferStatusToString(buffer_status) );
+            asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s::%s bad frame status: %s\n", 
+                driverName, functionName, ArvBufferStatusToString(buffer_status) );
         else if ( ((nConsecutiveBadFrames-10) % 1000) == 0 ) {
             static int  nBadFramesPrior = 0;
-            printf("Bad frame status: %s, %d msgs suppressed.\n", ArvBufferStatusToString(buffer_status),
-                    nConsecutiveBadFrames - nBadFramesPrior );
+            asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
+                "%s::%s dad frame status: %s, %d msgs suppressed.\n", 
+                driverName, functionName, ArvBufferStatusToString(buffer_status), (nConsecutiveBadFrames - nBadFramesPrior));
             nBadFramesPrior = nConsecutiveBadFrames;
         }
     }
@@ -447,7 +456,7 @@ asynStatus ADAravis::makeStreamObject() {
 
     // Enable callback on new buffers
     arv_stream_set_emit_signals (this->stream, TRUE);
-    g_signal_connect (this->stream, "new-buffer", G_CALLBACK (newBufferCallback), this);
+    g_signal_connect (this->stream, "new-buffer", G_CALLBACK (newBufferCallbackC), this);
     return asynSuccess;
 }
 
@@ -792,7 +801,6 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
                     break;
             }
             if (shift != 0) {
-                //printf("Shift by %d\n", shift);
                 uint16_t *array = (uint16_t *) pRaw->pData;
                 for (unsigned int ib = 0; ib < size / 2; ib++) {
                     array[ib] = array[ib] << shift;
@@ -807,13 +815,7 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
                     driverName, functionName, width, height, size, expected_size);
         return asynError;
     }
-/*
-    for (int ib = 0; ib<10; ib++) {
-        unsigned char *ix = ((unsigned char *)pRaw->pData) + ib;
-        printf("%d,", (int) (*ix));
-    }
-    printf("\n");
-*/
+
     /* this is a good image, so callback on it */
     if (arrayCallbacks) {
         /* Call the NDArray callback */
@@ -859,10 +861,12 @@ asynStatus ADAravis::startCapture() {
 
     if (hwImageMode && imageMode == ADImageSingle) {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME, NULL);
-    } else if (hwImageMode && (imageMode == ADImageMultiple) && mGCFeatureSet.getByName("AcquisitionFrameCount")) {
-        getIntegerParam(ADNumImages, &numImages);
-        arv_device_set_string_feature_value(this->device, "AcquisitionMode", "MultiFrame", NULL);
-        arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages, NULL);
+    } else if (hwImageMode && (imageMode == ADImageMultiple)) {
+        if (mGCFeatureSet.getByName("AcquisitionFrameCount")) {
+            getIntegerParam(ADNumImages, &numImages);
+            arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages, NULL);
+        }
+        arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_MULTI_FRAME, NULL);
     } else {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_CONTINUOUS, NULL);
     }
