@@ -12,9 +12,11 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
-### R1-3 (February XXX, 2020)
+### R1-3 (September 3, 2020)
 ----
 * Add .bob files for Phoebus Display Manager
+* This is the last release that will use ARAVIS_0_7_2.
+  The next release will require ARAVIS_0_8_0 which was recently released.
 
 ### R1-2 (January 5, 2020)
 ----

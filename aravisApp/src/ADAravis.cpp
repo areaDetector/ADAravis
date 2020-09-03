@@ -1,11 +1,10 @@
 /* ADAravis.cpp
  *
- * This is a driver for a GigE area detector.
+ * This is a driver for a GeniCam cameras using the aravis SDK. 
+ * It is based on the aravisGigE driver by Tom Cobb.
  *
- * Author: Tom Cobb
- *         Diamond Light Source
- *
- * Created:  4th October 2010
+ * Author: Mark Rivers
+ *         University of Chicago
  *
  */
 
@@ -35,7 +34,7 @@ extern "C" {
 #include <epicsExport.h>
 #include <arvFeature.h>
 
-#define DRIVER_VERSION "1.2.0"
+#define DRIVER_VERSION "1.3.0"
 
 /* number of raw buffers in our queue */
 #define NRAW 20
