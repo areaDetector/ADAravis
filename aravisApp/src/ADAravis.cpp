@@ -150,7 +150,6 @@ protected:
     int AravisResentPkts;
     int AravisLeftShift;
     int AravisConnection;
-    int AravisHWImageMode;
     int AravisReset;
     #define LAST_ARAVIS_CAMERA_PARAM AravisReset
 
@@ -316,7 +315,6 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     createParam("ARAVIS_PKT_TIMEOUT",    asynParamInt32,   &AravisPktTimeout);
     createParam("ARAVIS_LEFTSHIFT",      asynParamInt32,   &AravisLeftShift);
     createParam("ARAVIS_CONNECTION",     asynParamInt32,   &AravisConnection);
-    createParam("ARAVIS_HWIMAGEMODE",    asynParamInt32,   &AravisHWImageMode);
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
 
     /* Set some initial values for other parameters */
@@ -336,7 +334,6 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     setIntegerParam(AravisPktTimeout, 20000);       // aravisGigE default 20ms
     setIntegerParam(AravisResentPkts, 0);
     setIntegerParam(AravisLeftShift, 1);
-    setIntegerParam(AravisHWImageMode, 0);
     setIntegerParam(AravisReset, 0);
     
     /* Enable the fake camera for simulations */
@@ -547,8 +544,7 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
             setIntegerParam(function, rbv);
             status = asynError;
         }
-    } else if (function == AravisFrameRetention || function == AravisPktResend
-               || function == AravisPktTimeout  || function == AravisHWImageMode) {
+    } else if (function == AravisFrameRetention || function == AravisPktResend || function == AravisPktTimeout) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
@@ -853,15 +849,14 @@ asynStatus ADAravis::stopCapture() {
 }
 
 asynStatus ADAravis::startCapture() {
-    int imageMode, numImages, hwImageMode;
+    int imageMode, numImages;
     const char *functionName = "start";
     
-    getIntegerParam(AravisHWImageMode, &hwImageMode);
     getIntegerParam(ADImageMode, &imageMode);
 
-    if (hwImageMode && imageMode == ADImageSingle) {
+    if (imageMode == ADImageSingle) {
         arv_camera_set_acquisition_mode(this->camera, ARV_ACQUISITION_MODE_SINGLE_FRAME, NULL);
-    } else if (hwImageMode && (imageMode == ADImageMultiple)) {
+    } else if (imageMode == ADImageMultiple) {
         if (mGCFeatureSet.getByName("AcquisitionFrameCount")) {
             getIntegerParam(ADNumImages, &numImages);
             arv_device_set_integer_feature_value(this->device, "AcquisitionFrameCount", numImages, NULL);

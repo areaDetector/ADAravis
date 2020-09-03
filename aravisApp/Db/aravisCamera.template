@@ -130,24 +130,3 @@ record(mbbo, "$(P)$(R)ARLeftShift") {
   field(ONVL, "1")
   info(autosaveFields, "DESC ZRSV ONSV VAL")
 }
-
-record(bi, "$(P)$(R)ARHWImageMode_RBV") {
-  field(DESC, "Use HW register for acquisition modes")
-  field(DTYP, "asynInt32")
-  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_HWIMAGEMODE")
-  field(ZNAM, "No")
-  field(ONAM, "Yes")
-  field(SCAN, "I/O Intr")
-  info(autosaveFields, "DESC")
-}
-
-## If this is set to 1, the acquisition mode is communicated to the
-## hardware, on zero a software based implementation is used
-record(bo, "$(P)$(R)ARHWImageMode") {
-  field(DESC, "Use HW register for image modes")
-  field(DTYP, "asynInt32")
-  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_HWIMAGEMODE")
-  field(ZNAM, "No")
-  field(ONAM, "Yes")
-  info(autosaveFields, "DESC VAL")
-}

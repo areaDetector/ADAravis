@@ -497,7 +497,7 @@ release 0
 x 715
 y 350
 w 350
-h 450
+h 425
 lineColor rgb 0 0 0
 fillColor rgb 0 0 0
 lineWidth 0
@@ -1701,68 +1701,11 @@ newPos
 objType "controls"
 endObjectProperties
 
-# (Static Text)
-object activeXTextClass
-beginObjectProperties
-major 4
-minor 1
-release 1
-x 720
-y 770
-w 130
-h 20
-font "helvetica-medium-r-14.0"
-fontAlign "right"
-fgColor rgb 0 0 0
-bgColor index 3
-useDisplayBg
-value {
-  "HW image mode"
-}
-endObjectProperties
-
-# (Text Monitor)
-object activeXTextDspClass:noedit
-beginObjectProperties
-major 4
-minor 7
-release 0
-x 960
-y 771
-w 60
-h 18
-controlPv "$(P)$(R)ARHWImageMode_RBV"
-format "string"
-font "helvetica-medium-r-14.0"
-fontAlign "left"
-fgColor rgb 2560 0 47104
-bgColor rgb 47872 47872 47872
-limitsFromDb
-nullColor rgb 60928 46592 11008
-smartRefresh
-fastUpdate
-newPos
-objType "controls"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 360
-y 205
-w 350
-h 500
-
-beginGroup
-
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 1
+minor 0
 release 0
 x 360
 y 205
@@ -1782,30 +1725,11 @@ displayFileName {
 noScroll
 endObjectProperties
 
-endGroup
-
-visMin "A"
-visMax "1"
-endObjectProperties
-
-# (Group)
-object activeGroupClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 5
-y 465
-w 350
-h 155
-
-beginGroup
-
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 1
+minor 0
 release 0
 x 5
 y 465
@@ -1823,12 +1747,6 @@ displayFileName {
   0 "ADGenICamTrigger.edl"
 }
 noScroll
-endObjectProperties
-
-endGroup
-
-visMin "A"
-visMax "1"
 endObjectProperties
 # (Group)
 object activeGroupClass
@@ -1862,26 +1780,26 @@ icon
 numPvs 18
 numDsps 9
 displayFileName {
-  0 $(C)-features.edl
-  1 $(C)-features_1.edl
-  2 $(C)-features_2.edl
-  3 $(C)-features_3.edl
-  4 $(C)-features_4.edl
-  5 $(C)-features_5.edl
-  6 $(C)-features_6.edl
-  7 $(C)-features_7.edl
-  8 $(C)-features_8.edl
+  0 "$(C)-features.edl"
+  1 "$(C)-features_1.edl"
+  2 "$(C)-features_2.edl"
+  3 "$(C)-features_3.edl"
+  4 "$(C)-features_4.edl"
+  5 "$(C)-features_5.edl"
+  6 "$(C)-features_6.edl"
+  7 "$(C)-features_7.edl"
+  8 "$(C)-features_8.edl"
 }
 menuLabel {
-  0 Features (custom)
-  1 Features #1
-  2 Features #2
-  3 Features #3
-  4 Features #4
-  5 Features #5
-  6 Features #6
-  7 Features #7
-  8 Features #8
+  0 "Features (custom)"
+  1 "Features #1"
+  2 "Features #2"
+  3 "Features #3"
+  4 "Features #4"
+  5 "Features #5"
+  6 "Features #6"
+  7 "Features #7"
+  8 "Features #8"
 }
 symbols {
   0 "P=$(P),R=$(R)"
@@ -2034,26 +1952,6 @@ topShadowColor rgb 55808 55808 55808
 botShadowColor rgb 17920 17920 17920
 controlPv "$(P)$(R)ARLeftShift"
 indicatorPv "$(P)$(R)ARLeftShift"
-font "helvetica-medium-r-12.0"
-endObjectProperties
-
-# (Menu Button)
-object activeMenuButtonClass
-beginObjectProperties
-major 4
-minor 0
-release 0
-x 855
-y 770
-w 100
-h 20
-fgColor rgb 0 0 0
-bgColor rgb 29440 57088 65280
-inconsistentColor rgb 17920 17920 17920
-topShadowColor rgb 55808 55808 55808
-botShadowColor rgb 17920 17920 17920
-controlPv "$(P)$(R)ARHWImageMode"
-indicatorPv "$(P)$(R)ARHWImageMode"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

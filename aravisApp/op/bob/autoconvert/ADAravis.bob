@@ -321,7 +321,7 @@
     <x>715</x>
     <y>350</y>
     <width>350</width>
-    <height>450</height>
+    <height>425</height>
     <line_width>1</line_width>
     <line_color>
       <color red="0" green="0" blue="0">
@@ -1275,6 +1275,11 @@
   <widget type="action_button" version="3.0.0">
     <name>message button #265</name>
     <actions>
+      <action type="write_pv">
+        <pv_name>$(P)$(R)ARResetCamera</pv_name>
+        <value></value>
+        <description>Write</description>
+      </action>
     </actions>
     <pv_name>$(P)$(R)ARResetCamera</pv_name>
     <text>Reset camera</text>
@@ -1333,55 +1338,8 @@
     <show_units>false</show_units>
     <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
-  <widget type="label" version="2.0.0">
-    <name>text #278</name>
-    <text>HW image mode</text>
-    <x>720</x>
-    <y>770</y>
-    <width>130</width>
-    <font>
-      <font family="Liberation Sans" style="REGULAR" size="16.0">
-      </font>
-    </font>
-    <horizontal_alignment>2</horizontal_alignment>
-  </widget>
-  <widget type="combo" version="2.0.0">
-    <name>menu #281</name>
-    <pv_name>$(P)$(R)ARHWImageMode</pv_name>
-    <x>855</x>
-    <y>770</y>
-    <height>20</height>
-    <background_color>
-      <color red="115" green="223" blue="255">
-      </color>
-    </background_color>
-    <border_alarm_sensitive>false</border_alarm_sensitive>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>text update #284</name>
-    <pv_name>$(P)$(R)ARHWImageMode_RBV</pv_name>
-    <x>960</x>
-    <y>771</y>
-    <width>60</width>
-    <height>18</height>
-    <font>
-      <font family="Liberation Sans" style="REGULAR" size="16.0">
-      </font>
-    </font>
-    <foreground_color>
-      <color red="10" green="0" blue="184">
-      </color>
-    </foreground_color>
-    <background_color>
-      <color red="187" green="187" blue="187">
-      </color>
-    </background_color>
-    <format>6</format>
-    <show_units>false</show_units>
-    <border_alarm_sensitive>false</border_alarm_sensitive>
-  </widget>
   <widget type="embedded" version="2.0.0">
-    <name>composite #288</name>
+    <name>composite #278</name>
     <file>ADGenICamCollect.bob</file>
     <x>360</x>
     <y>205</y>
@@ -1389,7 +1347,7 @@
     <height>500</height>
   </widget>
   <widget type="embedded" version="2.0.0">
-    <name>composite #290</name>
+    <name>composite #280</name>
     <file>ADGenICamTrigger.bob</file>
     <x>5</x>
     <y>465</y>
