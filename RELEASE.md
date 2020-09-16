@@ -12,6 +12,20 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
+### R2-0 (September XXX, 2020)
+----
+* Updated from aravis 0.7.2 to 0.8.1.  The aravis API has changed, so sites will need to update their
+  local aravis installation to 0.8.1.
+* Fixed a problem with GenICam boolean features.  Previously the code was calling the aravis functions
+  for integer features, which did not work.  It was changed to call the functions for boolean features,
+  and it now works correctly.
+* Removed ARHWImageMode. This was presumably used to support cameras that did not support
+  the GenICam AcquisitionMode feature.  It seems all cameras now support that, and it
+  was not tested that it actually worked.
+* Changed printf() calls to asynPrint.  This required adding a new method.
+* Added an example of adding the GenICam feature PV $(P)cam1:GC_Gamma to autosave in
+  the iocAravis directory.  The auto_settings.req and st.cmd.BlackflyS_13Y3M files were changed.
+
 ### R1-3 (September 3, 2020)
 ----
 * Add .bob files for Phoebus Display Manager
