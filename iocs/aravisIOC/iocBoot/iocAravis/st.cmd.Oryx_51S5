@@ -20,6 +20,6 @@ epicsEnvSet("NELEMENTS", "5013504")
 epicsEnvSet("ENABLE_CACHING", "1")
 
 # The database file
-epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/FLIR_ORX_10G_51S5.template")
+epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/FLIR_ORX_10G_51S5M.template")
 
 < st.cmd.base
