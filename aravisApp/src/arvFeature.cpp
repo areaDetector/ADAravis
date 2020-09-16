@@ -64,11 +64,11 @@ void arvFeature::writeInteger(epicsInt64 value) {
 }
 
 bool arvFeature::readBoolean() { 
-    return arv_device_get_integer_feature_value(mDevice, mFeatureName.c_str(), NULL);
+    return arv_device_get_boolean_feature_value(mDevice, mFeatureName.c_str(), NULL);
 }
 
 void arvFeature::writeBoolean(bool value) { 
-    arv_device_set_integer_feature_value(mDevice, mFeatureName.c_str(), value ? 1 : 0, NULL);
+    arv_device_set_boolean_feature_value(mDevice, mFeatureName.c_str(), value, NULL);
 }
 
 double arvFeature::readDouble() { 
