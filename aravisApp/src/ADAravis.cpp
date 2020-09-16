@@ -34,7 +34,7 @@ extern "C" {
 #include <epicsExport.h>
 #include <arvFeature.h>
 
-#define DRIVER_VERSION "1.3.0"
+#define DRIVER_VERSION "2.0.0"
 
 /* number of raw buffers in our queue */
 #define NRAW 20
