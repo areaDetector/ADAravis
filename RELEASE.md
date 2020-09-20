@@ -12,7 +12,7 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
-### R2-0 (September XXX, 2020)
+### R2-0 (September 20, 2020)
 ----
 * Updated from aravis 0.7.2 to 0.8.1.  The aravis API has changed, so sites will need to update their
   local aravis installation to 0.8.1.
