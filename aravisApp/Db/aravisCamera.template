@@ -128,5 +128,6 @@ record(mbbo, "$(P)$(R)ARLeftShift") {
   field(ZRVL, "0")
   field(ONST, "Yes")
   field(ONVL, "1")
+  field(PINI, "1")
   info(autosaveFields, "DESC ZRSV ONSV VAL")
 }
