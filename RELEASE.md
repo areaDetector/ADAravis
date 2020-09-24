@@ -12,6 +12,13 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
+### R2-1 (September XXX, 2020)
+----
+* Added support for PixelFormat=Mono12Packed and Mono12p.
+  This requires ADCore R3-11 because it contains the code to decompress these formats.
+* Set PINI=1 on the ARLeftShift record.  It was not initializing with the autosaved value.
+
+
 ### R2-0 (September 20, 2020)
 ----
 * Updated from aravis 0.7.2 to 0.8.1.  The aravis API has changed, so sites will need to update their
