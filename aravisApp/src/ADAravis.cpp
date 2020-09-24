@@ -23,6 +23,8 @@
 #include <epicsThread.h>
 #include <initHooks.h>
 
+#include <decompressMono12.h>
+
 /* ADGenICam includes */
 #include <ADGenICam.h>
 
@@ -35,6 +37,9 @@ extern "C" {
 #include <arvFeature.h>
 
 #define DRIVER_VERSION "2.0.0"
+// aravis does not define the Mono12p format yet.
+#define ARV_PIXEL_FORMAT_MONO_12_P         ((ArvPixelFormat) 0x010c0047u)
+
 
 /* number of raw buffers in our queue */
 #define NRAW 20
@@ -79,6 +84,8 @@ static const struct pix_lookup pix_lookup[] = {
     { ARV_PIXEL_FORMAT_MONO_16,       NDColorModeMono,  NDUInt16, 0           },
 // this doesn't work on Manta camers    { ARV_PIXEL_FORMAT_MONO_14,       NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_MONO_12,       NDColorModeMono,  NDUInt16, 0           },
+    { ARV_PIXEL_FORMAT_MONO_12_P,     NDColorModeMono,  NDUInt16, 0           },
+    { ARV_PIXEL_FORMAT_MONO_12_PACKED,NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_MONO_10,       NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_RGB_12_PACKED, NDColorModeRGB1,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_RGB_10_PACKED, NDColorModeRGB1,  NDUInt16, 0           },
@@ -685,6 +692,7 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
     const char *functionName = "processBuffer";
     guint64 n_completed_buffers, n_failures, n_underruns;
     NDArray *pRaw;
+    bool releaseArray = false;
 
     /* Get the current parameters */
     getIntegerParam(NDArrayCounter, &imageCounter);
@@ -715,7 +723,39 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
                 driverName, functionName);
         return asynError;
     }
-//            printf("callb buffer: %p, pRaw[%d]: %p, pData %p\n", buffer, i, pRaw, pRaw->pData);
+//  printf("callb buffer: %p, pRaw[%d]: %p, pData %p\n", buffer, i, pRaw, pRaw->pData);
+    int pixel_format = arv_buffer_get_image_pixel_format(buffer);
+    int width = arv_buffer_get_image_width(buffer);
+    int height = arv_buffer_get_image_height(buffer);
+    int x_offset = arv_buffer_get_image_x(buffer);
+    int y_offset = arv_buffer_get_image_y(buffer);
+    size_t size = 0;
+    arv_buffer_get_data(buffer, &size);
+    
+    //  Print the first 16 bytes of the buffer in hex
+    //for (int i=0; i<16; i++) printf("%x ", ((epicsUInt8 *)pRaw->pData)[i]); printf("\n");
+
+    // If the pixel format is Mono12p or Mono12Packed we need to do the conversion to UInt16 here
+    if ((pixel_format == ARV_PIXEL_FORMAT_MONO_12_P) || 
+       ( pixel_format == ARV_PIXEL_FORMAT_MONO_12_PACKED)) {
+        //epicsTimeStamp tstart, tend;
+        //epicsTimeGetCurrent(&tstart);
+        NDArray *pIn = pRaw;
+        size_t bufferDims[2] = {(size_t)width, (size_t)height};
+        pRaw = this->pNDArrayPool->alloc(2, bufferDims, NDUInt16, 0, NULL);
+        if (pixel_format == ARV_PIXEL_FORMAT_MONO_12_P) {
+            decompressMono12p(width*height, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
+        } else {
+            decompressMono12Packed(width*height, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
+        }
+        //epicsTimeGetCurrent(&tend);
+        //printf("Time to convert Mono12 = %f\n", epicsTimeDiffInSeconds(&tend, &tstart));
+        size = width * height * sizeof(epicsUInt16);
+        releaseArray = true;
+    }
+    //  Print the first 8 pixels of the buffer in decimal
+    //for (int i=0; i<8; i++) printf("%u ", ((epicsUInt16 *)pRaw->pData)[i]); printf("\n");
+
     /* Put the frame number and time stamp into the buffer */
     pRaw->uniqueId = imageCounter;
     pRaw->timeStamp = arv_buffer_get_timestamp(buffer) / 1.e9;
@@ -727,7 +767,6 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
     this->getAttributes(pRaw->pAttributeList);
 
     /* Annotate it with its dimensions */
-    int pixel_format = arv_buffer_get_image_pixel_format(buffer);
     if (this->lookupColorMode(pixel_format, &colorMode, &dataType, &bayerFormat) != asynSuccess) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
                     "%s:%s: unknown pixel format %d\n",
@@ -737,12 +776,6 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
     pRaw->pAttributeList->add("BayerPattern", "Bayer Pattern", NDAttrInt32, &bayerFormat);
     pRaw->pAttributeList->add("ColorMode", "Color Mode", NDAttrInt32, &colorMode);
     pRaw->dataType = (NDDataType_t) dataType;
-    int width = arv_buffer_get_image_width(buffer);
-    int height = arv_buffer_get_image_height(buffer);
-    int x_offset = arv_buffer_get_image_x(buffer);
-    int y_offset = arv_buffer_get_image_y(buffer);
-    size_t size = 0;
-    arv_buffer_get_data(buffer, &size);
     setIntegerParam(NDArraySizeX, width);
     setIntegerParam(NDArraySizeY, height);
     setIntegerParam(NDArraySize, (int)size);
@@ -787,6 +820,8 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
                     shift = 2;
                     break;
                 case ARV_PIXEL_FORMAT_MONO_12:
+                case ARV_PIXEL_FORMAT_MONO_12_PACKED:
+                case ARV_PIXEL_FORMAT_MONO_12_P:
                     shift = 4;
                     break;
                 case ARV_PIXEL_FORMAT_MONO_10:
@@ -817,6 +852,10 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
              "%s:%s: calling imageData callback\n", driverName, functionName);
         doCallbacksGenericPointer(pRaw, NDArrayData, 0);
+    }
+    
+    if (releaseArray) {
+        pRaw->release();
     }
 
     /* Report statistics */
