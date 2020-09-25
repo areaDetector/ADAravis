@@ -23,8 +23,6 @@
 #include <epicsThread.h>
 #include <initHooks.h>
 
-#include <decompressMono12.h>
-
 /* ADGenICam includes */
 #include <ADGenICam.h>
 
