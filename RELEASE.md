@@ -15,7 +15,7 @@ Release Notes
 ### R2-1 (September XXX, 2020)
 ----
 * Added support for PixelFormat=Mono12Packed and Mono12p.
-  This requires ADCore R3-11 because it contains the code to decompress these formats.
+  This requires ADGenICam R1-6 or later because it contains the code to decompress these formats.
 * Set PINI=1 on the ARLeftShift record.  It was not initializing with the autosaved value.
 
 
