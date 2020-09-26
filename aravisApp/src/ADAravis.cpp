@@ -269,8 +269,6 @@ static void setIocRunningFlag(initHookState state) {
   * \param[in] cameraName The name of the camera, \<vendor\>-\<serial#\>, as returned by arv-show-devices
   * \param[in] enableCaching Flag to enable (1) or disable (0) register caching in aravis. 
                Performance is much better when caching is enable, but some cameras may not properly implement this.
-  * \param[in] maxBuffers The maximum number of NDArray buffers that the NDArrayPool for this driver is
-  *            allowed to allocate. Set this to -1 to allow an unlimited number of buffers.
   * \param[in] maxMemory The maximum amount of memory that the NDArrayPool for this driver is
   *            allowed to allocate. Set this to -1 to allow an unlimited amount of memory.
   * \param[in] priority The thread priority for the asyn port driver thread if ASYN_CANBLOCK is set in asynFlags.
