@@ -1,6 +1,6 @@
 
 file {
-	name="/home/epics/devel/areaDetector-3-9/ADAravis/aravisApp/op/adl/ADAravis.adl"
+	name="/home/epics/devel/areaDetector-3-10/ADAravis/aravisApp/op/adl/ADAravis.adl"
 	version=030109
 }
 display {
@@ -274,88 +274,6 @@ rectangle {
 	"basic attribute" {
 		clr=14
 		fill="outline"
-	}
-}
-menu {
-	object {
-		x=885
-		y=65
-		width=80
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ReadStatus.SCAN"
-		clr=14
-		bclr=51
-	}
-}
-text {
-	object {
-		x=770
-		y=65
-		width=110
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Status rate"
-	align="horiz. right"
-}
-text {
-	object {
-		x=720
-		y=90
-		width=160
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Frames completed"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=885
-		y=91
-		width=120
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARFramesCompleted"
-		clr=54
-		bclr=4
-	}
-	limits {
-	}
-}
-text {
-	object {
-		x=740
-		y=115
-		width=140
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Frame failures"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=885
-		y=116
-		width=120
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARFrameFailures"
-		clr=54
-		bclr=4
-	}
-	limits {
 	}
 }
 rectangle {
@@ -980,199 +898,6 @@ text {
 }
 text {
 	object {
-		x=730
-		y=140
-		width=150
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Frame underruns"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=885
-		y=141
-		width=120
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARFrameUnderruns"
-		clr=54
-		bclr=4
-	}
-	limits {
-	}
-}
-text {
-	object {
-		x=730
-		y=165
-		width=150
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Missing packets"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=885
-		y=166
-		width=120
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARMissingPackets"
-		clr=54
-		bclr=4
-	}
-	limits {
-	}
-}
-text {
-	object {
-		x=740
-		y=190
-		width=140
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Resent packets"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=885
-		y=191
-		width=120
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARResentPackets"
-		clr=54
-		bclr=4
-	}
-	limits {
-	}
-}
-text {
-	object {
-		x=750
-		y=215
-		width=130
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Resend enable"
-	align="horiz. right"
-}
-text {
-	object {
-		x=740
-		y=240
-		width=140
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Packet timeout"
-	align="horiz. right"
-}
-text {
-	object {
-		x=730
-		y=265
-		width=150
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Frame retention"
-	align="horiz. right"
-}
-text {
-	object {
-		x=760
-		y=290
-		width=120
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Reset camera"
-	align="horiz. right"
-}
-menu {
-	object {
-		x=885
-		y=215
-		width=120
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARPacketResendEnable"
-		clr=54
-		bclr=4
-	}
-}
-"text entry" {
-	object {
-		x=885
-		y=240
-		width=120
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARPacketTimeout"
-		clr=14
-		bclr=51
-	}
-	limits {
-	}
-}
-"text entry" {
-	object {
-		x=885
-		y=265
-		width=120
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARFrameRetention"
-		clr=14
-		bclr=51
-	}
-	limits {
-	}
-}
-"message button" {
-	object {
-		x=885
-		y=290
-		width=120
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARResetCamera"
-		clr=14
-		bclr=51
-	}
-	label="Reset camera"
-}
-text {
-	object {
 		x=750
 		y=745
 		width=100
@@ -1232,4 +957,290 @@ composite {
 	}
 	"composite name"=""
 	"composite file"="ADGenICamTrigger.adl"
+}
+composite {
+	object {
+		x=750
+		y=290
+		width=215
+		height=20
+	}
+	"composite name"=""
+	children {
+		text {
+			object {
+				x=750
+				y=290
+				width=130
+				height=20
+			}
+			"basic attribute" {
+				clr=14
+			}
+			textix="Poll features"
+			align="horiz. right"
+		}
+		menu {
+			object {
+				x=885
+				y=290
+				width=80
+				height=20
+			}
+			control {
+				chan="$(P)$(R)ReadStatus.SCAN"
+				clr=14
+				bclr=51
+			}
+		}
+	}
+}
+text {
+	object {
+		x=720
+		y=65
+		width=160
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Frames completed"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=885
+		y=66
+		width=120
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARFramesCompleted"
+		clr=54
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=740
+		y=90
+		width=140
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Frame failures"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=885
+		y=91
+		width=120
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARFrameFailures"
+		clr=54
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=730
+		y=115
+		width=150
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Frame underruns"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=885
+		y=116
+		width=120
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARFrameUnderruns"
+		clr=54
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=730
+		y=140
+		width=150
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Missing packets"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=885
+		y=141
+		width=120
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARMissingPackets"
+		clr=54
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=740
+		y=165
+		width=140
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Resent packets"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=885
+		y=166
+		width=120
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARResentPackets"
+		clr=54
+		bclr=4
+	}
+	limits {
+	}
+}
+text {
+	object {
+		x=750
+		y=190
+		width=130
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Resend enable"
+	align="horiz. right"
+}
+text {
+	object {
+		x=740
+		y=215
+		width=140
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Packet timeout"
+	align="horiz. right"
+}
+text {
+	object {
+		x=730
+		y=240
+		width=150
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Frame retention"
+	align="horiz. right"
+}
+text {
+	object {
+		x=760
+		y=265
+		width=120
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Reset camera"
+	align="horiz. right"
+}
+menu {
+	object {
+		x=885
+		y=190
+		width=120
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARPacketResendEnable"
+		clr=54
+		bclr=4
+	}
+}
+"text entry" {
+	object {
+		x=885
+		y=215
+		width=120
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARPacketTimeout"
+		clr=14
+		bclr=51
+	}
+	limits {
+	}
+}
+"text entry" {
+	object {
+		x=885
+		y=240
+		width=120
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARFrameRetention"
+		clr=14
+		bclr=51
+	}
+	limits {
+	}
+}
+"message button" {
+	object {
+		x=885
+		y=265
+		width=120
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARResetCamera"
+		clr=14
+		bclr=51
+	}
+	label="Reset camera"
 }
