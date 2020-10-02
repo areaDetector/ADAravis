@@ -12,12 +12,13 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
-### R2-1 (September XXX, 2020)
+### R2-1 (October 2, 2020)
 ----
 * Added support for PixelFormat=Mono12Packed and Mono12p.
-  This requires ADGenICam R1-6 or later because it contains the code to decompress these formats.
+  This requires ADGenICam R1-6 or later because that contains the code to decompress these formats.
+  These formats send 2 12-bit pixel values in 3 bytes, rather than 4 bytes required with Mono16.
+  This reduces network bandwidth and allows many cameras to run faster.
 * Set PINI=1 on the ARLeftShift record.  It was not initializing with the autosaved value.
-
 
 ### R2-0 (September 20, 2020)
 ----
