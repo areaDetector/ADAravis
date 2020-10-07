@@ -60,11 +60,24 @@ value {
 }
 endObjectProperties
 
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 380
+w 350
+h 80
+
+beginGroup
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 5
 y 380
@@ -84,11 +97,30 @@ displayFileName {
 noScroll
 endObjectProperties
 
+endGroup
+
+visMin "A"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 35
+w 350
+h 165
+
+beginGroup
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 360
 y 35
@@ -108,11 +140,30 @@ displayFileName {
 noScroll
 endObjectProperties
 
+endGroup
+
+visMin "A"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 360
+y 710
+w 350
+h 110
+
+beginGroup
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 360
 y 710
@@ -132,11 +183,30 @@ displayFileName {
 noScroll
 endObjectProperties
 
+endGroup
+
+visMin "A"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 5
+y 625
+w 350
+h 160
+
+beginGroup
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 5
 y 625
@@ -156,11 +226,30 @@ displayFileName {
 noScroll
 endObjectProperties
 
+endGroup
+
+visMin "A"
+visMax "1"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 6
+y 35
+w 350
+h 340
+
+beginGroup
+
 # (Embedded Window)
 object activePipClass
 beginObjectProperties
 major 4
-minor 0
+minor 1
 release 0
 x 6
 y 35
@@ -178,6 +267,12 @@ displayFileName {
   0 "ADSetup.edl"
 }
 noScroll
+endObjectProperties
+
+endGroup
+
+visMin "A"
+visMax "1"
 endObjectProperties
 
 # (Group)
@@ -1702,7 +1797,7 @@ x 960
 y 746
 w 100
 h 18
-controlPv "$(P)$(R)ConvertPixelFormat_RBV"
+controlPv "$(P)$(R)ARConvertPixelFormat_RBV"
 format "string"
 font "helvetica-medium-r-14.0"
 fontAlign "left"
@@ -1890,7 +1985,7 @@ offColor rgb 29440 57088 65280
 topShadowColor rgb 65280 65280 65280
 botShadowColor rgb 0 0 0
 controlPv "$(P)$(R)ARResetCamera"
-pressValue 
+pressValue "1"
 releaseValue 
 onLabel "Reset camera"
 offLabel "Reset camera"
@@ -1954,8 +2049,8 @@ bgColor rgb 29440 57088 65280
 inconsistentColor rgb 17920 17920 17920
 topShadowColor rgb 55808 55808 55808
 botShadowColor rgb 17920 17920 17920
-controlPv "$(P)$(R)PixelPixelFormat"
-indicatorPv "$(P)$(R)PixelPixelFormat"
+controlPv "$(P)$(R)ARConvertPixelFormat"
+indicatorPv "$(P)$(R)ARConvertPixelFormat"
 font "helvetica-medium-r-12.0"
 endObjectProperties
 

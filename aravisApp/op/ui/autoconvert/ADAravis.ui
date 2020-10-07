@@ -3193,6 +3193,9 @@ border-radius: 2px;
             <property name="label">
                 <string>Reset camera</string>
             </property>
+            <property name="pressMessage">
+                <string>1</string>
+            </property>
             <property name="colorMode">
                 <enum>caMessageButton::Static</enum>
             </property>
@@ -3483,7 +3486,7 @@ border-radius: 2px;
                 </rect>
             </property>
             <property name="channel">
-                <string>$(P)$(R)PixelPixelFormat</string>
+                <string>$(P)$(R)ARConvertPixelFormat</string>
             </property>
             <property name="foreground">
                 <color alpha="255">
@@ -3516,7 +3519,7 @@ border-radius: 2px;
                 <enum>caLineEdit::WidthAndHeight</enum>
             </property>
             <property name="channel">
-                <string>$(P)$(R)ConvertPixelFormat_RBV</string>
+                <string>$(P)$(R)ARConvertPixelFormat_RBV</string>
             </property>
             <property name="foreground">
                 <color alpha="255">

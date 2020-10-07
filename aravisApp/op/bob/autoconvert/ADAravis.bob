@@ -1253,7 +1253,7 @@
     <actions>
       <action type="write_pv">
         <pv_name>$(P)$(R)ARResetCamera</pv_name>
-        <value></value>
+        <value>1</value>
         <description>Write</description>
       </action>
     </actions>
@@ -1374,7 +1374,7 @@
   </widget>
   <widget type="combo" version="2.0.0">
     <name>menu #288</name>
-    <pv_name>$(P)$(R)PixelPixelFormat</pv_name>
+    <pv_name>$(P)$(R)ARConvertPixelFormat</pv_name>
     <x>856</x>
     <y>746</y>
     <height>20</height>
@@ -1386,7 +1386,7 @@
   </widget>
   <widget type="textupdate" version="2.0.0">
     <name>text update #291</name>
-    <pv_name>$(P)$(R)ConvertPixelFormat_RBV</pv_name>
+    <pv_name>$(P)$(R)ARConvertPixelFormat_RBV</pv_name>
     <x>960</x>
     <y>746</y>
     <height>18</height>
