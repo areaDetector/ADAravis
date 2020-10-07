@@ -1159,6 +1159,7 @@ menu {
 		bclr=51
 	}
 	label="Reset camera"
+	press_msg="1"
 }
 menu {
 	object {
