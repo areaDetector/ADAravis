@@ -1,5 +1,6 @@
 file "ADGenICam_settings.req", P=$(P), R=$(R)
 $(P)$(R)ARPacketResendEnable
+$(P)$(R)ARConvertPixelFormat
 $(P)$(R)ARLeftShift
 $(P)$(R)ARPacketTimeout
 $(P)$(R)ARFrameRetention

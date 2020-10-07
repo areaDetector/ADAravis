@@ -108,6 +108,30 @@ record(calcout, "$(P)$(R)ARCheckConnection")
    field(OUT,  "$(P)$(R)ARConnectCamera.PROC PP")
 }
 
+record(mbbi, "$(P)$(R)ARConvertPixelFormat_RBV") {
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_CONVERT_PIXEL_FORMAT")
+  field(ZRST, "Mono16Low")
+  field(ZRVL, "0")
+  field(ONST, "Mono16High")
+  field(ONVL, "1")
+  field(SCAN, "I/O Intr")
+  info(autosaveFields, "DESC ZRSV ONSV")
+}
+
+## When unpacking Mono12Packed or Mono12p selects whether 16-bit output is 
+## left shifted by 4 bits (Mono16High) or not (Mono16Low)
+record(mbbo, "$(P)$(R)ARConvertPixelFormat") {
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_CONVERT_PIXEL_FORMAT")
+  field(ZRST, "Mono16Low")
+  field(ZRVL, "0")
+  field(ONST, "Mono16High")
+  field(ONVL, "1")
+  field(PINI, "1")
+  info(autosaveFields, "DESC ZRSV ONSV VAL")
+}
+
 record(mbbi, "$(P)$(R)ARLeftShift_RBV") {
   field(DTYP, "asynInt32")
   field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_LEFTSHIFT")
