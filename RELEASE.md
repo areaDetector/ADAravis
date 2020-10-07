@@ -26,7 +26,7 @@ Release Notes
   For example, FLIR cameras always left-shift Mono16 PixelFormat data so the most-significant bit 
   is in bit 15, and the data range is 0-65535, even if the ADC is only 10 or 12 bits.
   In some cases it may be preferable to right-shift this data so that it only spans the 
-  actual range of the ADC.  
+  actual range of the ADC.
   In the case of a 12-bit ADC this would be done with ShiftDir=Right and ShiftBits=4.
   The data will then span the range 0-4095.
   Note that when decompressing Mono12Packed and Mono12p data the ConvertPixelFormat
