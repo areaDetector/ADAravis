@@ -132,26 +132,76 @@ record(mbbo, "$(P)$(R)ARConvertPixelFormat") {
   info(autosaveFields, "DESC ZRSV ONSV VAL")
 }
 
-record(mbbi, "$(P)$(R)ARLeftShift_RBV") {
+record(mbbi, "$(P)$(R)ARShiftDir_RBV") {
   field(DTYP, "asynInt32")
-  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_LEFTSHIFT")
-  field(ZRST, "No")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_SHIFT_DIR")
+  field(ZRST, "None")
   field(ZRVL, "0")
-  field(ONST, "Yes")
+  field(ONST, "Left")
   field(ONVL, "1")
+  field(TWST, "Right")
+  field(TWVL, "2")
   field(SCAN, "I/O Intr")
   info(autosaveFields, "DESC ZRSV ONSV")
 }
 
-## If this is set to 1, then 10, 12 and 16 bit images will be left shifted 
-## so that a pixel with maximum exposure = 2^16 no matter what the pixel format 
-record(mbbo, "$(P)$(R)ARLeftShift") {
+## Select no shift, left shift, or right shift when reading data 
+record(mbbo, "$(P)$(R)ARShiftDir") {
   field(DTYP, "asynInt32")
-  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_LEFTSHIFT")
-  field(ZRST, "No")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_SHIFT_DIR")
+  field(ZRST, "None")
   field(ZRVL, "0")
-  field(ONST, "Yes")
+  field(ONST, "Left")
   field(ONVL, "1")
+  field(TWST, "Right")
+  field(TWVL, "2")
+  field(PINI, "1")
+  info(autosaveFields, "DESC ZRSV ONSV VAL")
+}
+
+record(mbbi, "$(P)$(R)ARShiftBits_RBV") {
+  field(DTYP, "asynInt32")
+  field(INP,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_SHIFT_BITS")
+  field(ZRST, "1")
+  field(ZRVL, "1")
+  field(ONST, "2")
+  field(ONVL, "2")
+  field(TWST, "3")
+  field(TWVL, "3")
+  field(THST, "4")
+  field(THVL, "4")
+  field(FRST, "5")
+  field(FRVL, "5")
+  field(FVST, "6")
+  field(FVVL, "6")
+  field(SXST, "7")
+  field(SXVL, "7")
+  field(SVST, "8")
+  field(SVVL, "8")
+  field(SCAN, "I/O Intr")
+  info(autosaveFields, "DESC ZRSV ONSV")
+}
+
+## Selects how many bits to shift left or right when reading data 
+record(mbbo, "$(P)$(R)ARShiftBits") {
+  field(DTYP, "asynInt32")
+  field(OUT,  "@asyn($(PORT),$(ADDR=0),$(TIMEOUT=1))ARAVIS_SHIFT_BITS")
+  field(ZRST, "1")
+  field(ZRVL, "1")
+  field(ONST, "2")
+  field(ONVL, "2")
+  field(TWST, "3")
+  field(TWVL, "3")
+  field(THST, "4")
+  field(THVL, "4")
+  field(FRST, "5")
+  field(FRVL, "5")
+  field(FVST, "6")
+  field(FVVL, "6")
+  field(SXST, "7")
+  field(SXVL, "7")
+  field(SVST, "8")
+  field(SVVL, "8")
   field(PINI, "1")
   info(autosaveFields, "DESC ZRSV ONSV VAL")
 }
