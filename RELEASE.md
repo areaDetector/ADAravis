@@ -14,7 +14,7 @@ Release Notes
 =============
 ### R2-2 (October XXX, 2020)
 ----
-* Added new ConvertPixelFormat mbbo record with choices of Mono16Low and Mono16High.  
+* Added new ConvertPixelFormat mbbo record with choices of Mono16Low and Mono16High.
   This record controls how Mono12Packed and Mono12p pixel formats are decompressed.
   Mono16Low means that the data is not left-shifted by 4 bits, so bits 11-15 are 0.
   Mono16High means that the data is left-shifted by 4 bits, so bits 0-3 are 0.
