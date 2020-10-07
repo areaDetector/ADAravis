@@ -8,7 +8,7 @@ display {
 		x=249
 		y=74
 		width=1070
-		height=825
+		height=830
 	}
 	clr=14
 	bclr=4
@@ -292,7 +292,7 @@ rectangle {
 		x=715
 		y=350
 		width=350
-		height=450
+		height=475
 	}
 	"basic attribute" {
 		clr=14
@@ -1161,48 +1161,6 @@ menu {
 	label="Reset camera"
 	press_msg="1"
 }
-menu {
-	object {
-		x=855
-		y=770
-		width=100
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARLeftShift"
-		clr=14
-		bclr=51
-	}
-}
-text {
-	object {
-		x=750
-		y=770
-		width=100
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Left shift"
-	align="horiz. right"
-}
-"text update" {
-	object {
-		x=960
-		y=771
-		width=60
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARLeftShift_RBV"
-		clr=54
-		bclr=4
-	}
-	format="string"
-	limits {
-	}
-}
 text {
 	object {
 		x=730
@@ -1280,6 +1238,90 @@ menu {
 	}
 	monitor {
 		chan="$(P)$(R)ARConvertPixelFormat_RBV"
+		clr=54
+		bclr=4
+	}
+	format="string"
+	limits {
+	}
+}
+text {
+	object {
+		x=750
+		y=770
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Shift dir."
+	align="horiz. right"
+}
+menu {
+	object {
+		x=855
+		y=770
+		width=100
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARShiftDir"
+		clr=14
+		bclr=51
+	}
+}
+"text update" {
+	object {
+		x=960
+		y=771
+		width=100
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARShiftDir_RBV"
+		clr=54
+		bclr=4
+	}
+	format="string"
+	limits {
+	}
+}
+text {
+	object {
+		x=750
+		y=795
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Shift bits"
+	align="horiz. right"
+}
+menu {
+	object {
+		x=855
+		y=795
+		width=100
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARShiftBits"
+		clr=14
+		bclr=51
+	}
+}
+"text update" {
+	object {
+		x=960
+		y=796
+		width=100
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARShiftBits_RBV"
 		clr=54
 		bclr=4
 	}

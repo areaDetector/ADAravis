@@ -4,7 +4,7 @@
   <x>249</x>
   <y>74</y>
   <width>1070</width>
-  <height>825</height>
+  <height>830</height>
   <background_color>
     <color red="187" green="187" blue="187">
     </color>
@@ -226,7 +226,7 @@
     <x>715</x>
     <y>350</y>
     <width>350</width>
-    <height>450</height>
+    <height>475</height>
     <line_width>1</line_width>
     <line_color>
       <color red="0" green="0" blue="0">
@@ -1268,54 +1268,8 @@
       </color>
     </background_color>
   </widget>
-  <widget type="combo" version="2.0.0">
-    <name>menu #265</name>
-    <pv_name>$(P)$(R)ARLeftShift</pv_name>
-    <x>855</x>
-    <y>770</y>
-    <height>20</height>
-    <background_color>
-      <color red="115" green="223" blue="255">
-      </color>
-    </background_color>
-    <border_alarm_sensitive>false</border_alarm_sensitive>
-  </widget>
   <widget type="label" version="2.0.0">
-    <name>text #268</name>
-    <text>Left shift</text>
-    <x>750</x>
-    <y>770</y>
-    <font>
-      <font family="Liberation Sans" style="REGULAR" size="16.0">
-      </font>
-    </font>
-    <horizontal_alignment>2</horizontal_alignment>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>text update #271</name>
-    <pv_name>$(P)$(R)ARLeftShift_RBV</pv_name>
-    <x>960</x>
-    <y>771</y>
-    <width>60</width>
-    <height>18</height>
-    <font>
-      <font family="Liberation Sans" style="REGULAR" size="16.0">
-      </font>
-    </font>
-    <foreground_color>
-      <color red="10" green="0" blue="184">
-      </color>
-    </foreground_color>
-    <background_color>
-      <color red="187" green="187" blue="187">
-      </color>
-    </background_color>
-    <format>6</format>
-    <show_units>false</show_units>
-    <border_alarm_sensitive>false</border_alarm_sensitive>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>text #275</name>
+    <name>text #265</name>
     <text>Pixel format</text>
     <x>730</x>
     <y>720</y>
@@ -1327,7 +1281,7 @@
     <horizontal_alignment>2</horizontal_alignment>
   </widget>
   <widget type="combo" version="2.0.0">
-    <name>menu #278</name>
+    <name>menu #268</name>
     <pv_name>$(P)$(R)PixelFormat</pv_name>
     <x>856</x>
     <y>721</y>
@@ -1339,7 +1293,7 @@
     <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="textupdate" version="2.0.0">
-    <name>text update #281</name>
+    <name>text update #271</name>
     <pv_name>$(P)$(R)PixelFormat_RBV</pv_name>
     <x>960</x>
     <y>721</y>
@@ -1361,7 +1315,7 @@
     <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="label" version="2.0.0">
-    <name>text #285</name>
+    <name>text #275</name>
     <text>Convert fmt.</text>
     <x>730</x>
     <y>745</y>
@@ -1373,7 +1327,7 @@
     <horizontal_alignment>2</horizontal_alignment>
   </widget>
   <widget type="combo" version="2.0.0">
-    <name>menu #288</name>
+    <name>menu #278</name>
     <pv_name>$(P)$(R)ARConvertPixelFormat</pv_name>
     <x>856</x>
     <y>746</y>
@@ -1385,10 +1339,100 @@
     <border_alarm_sensitive>false</border_alarm_sensitive>
   </widget>
   <widget type="textupdate" version="2.0.0">
-    <name>text update #291</name>
+    <name>text update #281</name>
     <pv_name>$(P)$(R)ARConvertPixelFormat_RBV</pv_name>
     <x>960</x>
     <y>746</y>
+    <height>18</height>
+    <font>
+      <font family="Liberation Sans" style="REGULAR" size="16.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="10" green="0" blue="184">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="187" green="187" blue="187">
+      </color>
+    </background_color>
+    <format>6</format>
+    <show_units>false</show_units>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>text #285</name>
+    <text>Shift dir.</text>
+    <x>750</x>
+    <y>770</y>
+    <font>
+      <font family="Liberation Sans" style="REGULAR" size="16.0">
+      </font>
+    </font>
+    <horizontal_alignment>2</horizontal_alignment>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>menu #288</name>
+    <pv_name>$(P)$(R)ARShiftDir</pv_name>
+    <x>855</x>
+    <y>770</y>
+    <height>20</height>
+    <background_color>
+      <color red="115" green="223" blue="255">
+      </color>
+    </background_color>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>text update #291</name>
+    <pv_name>$(P)$(R)ARShiftDir_RBV</pv_name>
+    <x>960</x>
+    <y>771</y>
+    <height>18</height>
+    <font>
+      <font family="Liberation Sans" style="REGULAR" size="16.0">
+      </font>
+    </font>
+    <foreground_color>
+      <color red="10" green="0" blue="184">
+      </color>
+    </foreground_color>
+    <background_color>
+      <color red="187" green="187" blue="187">
+      </color>
+    </background_color>
+    <format>6</format>
+    <show_units>false</show_units>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>text #295</name>
+    <text>Shift bits</text>
+    <x>750</x>
+    <y>795</y>
+    <font>
+      <font family="Liberation Sans" style="REGULAR" size="16.0">
+      </font>
+    </font>
+    <horizontal_alignment>2</horizontal_alignment>
+  </widget>
+  <widget type="combo" version="2.0.0">
+    <name>menu #298</name>
+    <pv_name>$(P)$(R)ARShiftBits</pv_name>
+    <x>855</x>
+    <y>795</y>
+    <height>20</height>
+    <background_color>
+      <color red="115" green="223" blue="255">
+      </color>
+    </background_color>
+    <border_alarm_sensitive>false</border_alarm_sensitive>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>text update #301</name>
+    <pv_name>$(P)$(R)ARShiftBits_RBV</pv_name>
+    <x>960</x>
+    <y>796</y>
     <height>18</height>
     <font>
       <font family="Liberation Sans" style="REGULAR" size="16.0">
