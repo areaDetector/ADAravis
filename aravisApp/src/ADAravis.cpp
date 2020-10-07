@@ -71,6 +71,12 @@ struct pix_lookup {
     int colorMode, dataType, bayerFormat;
 };
 
+typedef enum {
+    AravisConvertPixelFormatMono16Low,
+    AravisConvertPixelFormatMono16High
+} AravisConvertPixelFormat_t;
+
+
 static const struct pix_lookup pix_lookup[] = {
     { ARV_PIXEL_FORMAT_MONO_8,        NDColorModeMono,  NDUInt8,  0           },
     { ARV_PIXEL_FORMAT_RGB_8_PACKED,  NDColorModeRGB1,  NDUInt8,  0           },
@@ -152,6 +158,7 @@ protected:
     int AravisPktResend;
     int AravisPktTimeout;
     int AravisResentPkts;
+    int AravisConvertPixelFormat;
     int AravisLeftShift;
     int AravisConnection;
     int AravisReset;
@@ -315,6 +322,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     createParam("ARAVIS_RESENT_PKTS",    asynParamInt32,   &AravisResentPkts);
     createParam("ARAVIS_PKT_RESEND",     asynParamInt32,   &AravisPktResend);
     createParam("ARAVIS_PKT_TIMEOUT",    asynParamInt32,   &AravisPktTimeout);
+    createParam("ARAVIS_CONVERT_PIXEL_FORMAT", asynParamInt32,   &AravisConvertPixelFormat);
     createParam("ARAVIS_LEFTSHIFT",      asynParamInt32,   &AravisLeftShift);
     createParam("ARAVIS_CONNECTION",     asynParamInt32,   &AravisConnection);
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
@@ -335,6 +343,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     setIntegerParam(AravisPktResend, 1);
     setIntegerParam(AravisPktTimeout, 20000);       // aravisGigE default 20ms
     setIntegerParam(AravisResentPkts, 0);
+    setIntegerParam(AravisConvertPixelFormat, AravisConvertPixelFormatMono16Low);
     setIntegerParam(AravisLeftShift, 1);
     setIntegerParam(AravisReset, 0);
     
@@ -736,13 +745,16 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
        ( pixel_format == ARV_PIXEL_FORMAT_MONO_12_PACKED)) {
         //epicsTimeStamp tstart, tend;
         //epicsTimeGetCurrent(&tstart);
+        int convertFormat;
+        getIntegerParam(AravisConvertPixelFormat, &convertFormat);
+        bool leftShift = (convertFormat == AravisConvertPixelFormatMono16High);
         NDArray *pIn = pRaw;
         size_t bufferDims[2] = {(size_t)width, (size_t)height};
         pRaw = this->pNDArrayPool->alloc(2, bufferDims, NDUInt16, 0, NULL);
         if (pixel_format == ARV_PIXEL_FORMAT_MONO_12_P) {
-            decompressMono12p(width*height, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
+            decompressMono12p(width*height, leftShift, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
         } else {
-            decompressMono12Packed(width*height, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
+            decompressMono12Packed(width*height, leftShift, (epicsUInt8 *)pIn->pData, (epicsUInt16 *)pRaw->pData);
         }
         //epicsTimeGetCurrent(&tend);
         //printf("Time to convert Mono12 = %f\n", epicsTimeDiffInSeconds(&tend, &tstart));
