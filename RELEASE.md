@@ -21,7 +21,7 @@ Release Notes
   This requires ADGenICam R1-7 or later because that contains the code to handle the left-shift option.
 * Replaced the LeftShift record with ShiftDir and ShiftBits.
   ShiftDir selects the direction in which to shift UInt16 data.  Choices are None, Left, and Right.
-  ShiftBits controls the number of bits to shift.  Choices are 1-8.
+  ShiftBits controls the number of bits to shift.  Choices are 1-8.  This record is not used if ShiftDir=None.
   This change allows complete control over how to shift Mono10, Mono12, and Mono16 pixel formats.
   For example, FLIR cameras always left-shift Mono16 PixelFormat data so the most-significant bit 
   is in bit 15, and the data range is 0-65535, even if the ADC is only 10 or 12 bits.
@@ -29,6 +29,9 @@ Release Notes
   actual range of the ADC.  
   In the case of a 12-bit ADC this would be done with ShiftDir=Right and ShiftBits=4.
   The data will then span the range 0-4095.
+  Note that when decompressing Mono12Packed and Mono12p data the ConvertPixelFormat
+  record selects whether or not to shift the data, so the ShiftDir record would normally
+  be set to None for those pixel formats.
 
 ### R2-1 (October 2, 2020)
 ----
