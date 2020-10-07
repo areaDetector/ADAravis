@@ -292,7 +292,7 @@ rectangle {
 		x=715
 		y=350
 		width=350
-		height=425
+		height=450
 	}
 	"basic attribute" {
 		clr=14
@@ -826,48 +826,6 @@ text {
 	limits {
 	}
 }
-text {
-	object {
-		x=730
-		y=720
-		width=120
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Pixel format"
-	align="horiz. right"
-}
-menu {
-	object {
-		x=856
-		y=721
-		width=100
-		height=20
-	}
-	control {
-		chan="$(P)$(R)PixelFormat"
-		clr=14
-		bclr=51
-	}
-}
-"text update" {
-	object {
-		x=960
-		y=721
-		width=100
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)PixelFormat_RBV"
-		clr=54
-		bclr=4
-	}
-	format="string"
-	limits {
-	}
-}
 "text update" {
 	object {
 		x=885
@@ -895,48 +853,6 @@ text {
 	}
 	textix="Temperature"
 	align="horiz. right"
-}
-text {
-	object {
-		x=750
-		y=745
-		width=100
-		height=20
-	}
-	"basic attribute" {
-		clr=14
-	}
-	textix="Left shift"
-	align="horiz. right"
-}
-menu {
-	object {
-		x=855
-		y=745
-		width=100
-		height=20
-	}
-	control {
-		chan="$(P)$(R)ARLeftShift"
-		clr=14
-		bclr=51
-	}
-}
-"text update" {
-	object {
-		x=960
-		y=746
-		width=60
-		height=18
-	}
-	monitor {
-		chan="$(P)$(R)ARLeftShift_RBV"
-		clr=54
-		bclr=4
-	}
-	format="string"
-	limits {
-	}
 }
 composite {
 	object {
@@ -1243,4 +1159,130 @@ menu {
 		bclr=51
 	}
 	label="Reset camera"
+}
+menu {
+	object {
+		x=855
+		y=770
+		width=100
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARLeftShift"
+		clr=14
+		bclr=51
+	}
+}
+text {
+	object {
+		x=750
+		y=770
+		width=100
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Left shift"
+	align="horiz. right"
+}
+"text update" {
+	object {
+		x=960
+		y=771
+		width=60
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARLeftShift_RBV"
+		clr=54
+		bclr=4
+	}
+	format="string"
+	limits {
+	}
+}
+text {
+	object {
+		x=730
+		y=720
+		width=120
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Pixel format"
+	align="horiz. right"
+}
+menu {
+	object {
+		x=856
+		y=721
+		width=100
+		height=20
+	}
+	control {
+		chan="$(P)$(R)PixelFormat"
+		clr=14
+		bclr=51
+	}
+}
+"text update" {
+	object {
+		x=960
+		y=721
+		width=100
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)PixelFormat_RBV"
+		clr=54
+		bclr=4
+	}
+	format="string"
+	limits {
+	}
+}
+text {
+	object {
+		x=730
+		y=745
+		width=120
+		height=20
+	}
+	"basic attribute" {
+		clr=14
+	}
+	textix="Convert fmt."
+	align="horiz. right"
+}
+menu {
+	object {
+		x=856
+		y=746
+		width=100
+		height=20
+	}
+	control {
+		chan="$(P)$(R)ARConvertPixelFormat"
+		clr=14
+		bclr=51
+	}
+}
+"text update" {
+	object {
+		x=960
+		y=746
+		width=100
+		height=18
+	}
+	monitor {
+		chan="$(P)$(R)ARConvertPixelFormat_RBV"
+		clr=54
+		bclr=4
+	}
+	format="string"
+	limits {
+	}
 }
