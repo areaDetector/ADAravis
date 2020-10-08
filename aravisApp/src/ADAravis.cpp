@@ -560,7 +560,7 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     } else if (function == AravisConnection) {
         if (this->connectionValid != 1) status = asynError;
     } else if (function == AravisFrameRetention || function == AravisPktResend || function == AravisPktTimeout ||
-               function == AravisShiftDir || function == AravisShiftBits) {
+               function == AravisShiftDir || function == AravisShiftBits || function == AravisConvertPixelFormat) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
