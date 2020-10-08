@@ -16,8 +16,8 @@ Release Notes
 ----
 * Added new ConvertPixelFormat mbbo record with choices of Mono16Low and Mono16High.
   This record controls how Mono12Packed and Mono12p pixel formats are decompressed.
-  Mono16Low means that the data is not left-shifted by 4 bits, so bits 12-15 are 0.
-  Mono16High means that the data is left-shifted by 4 bits, so bits 0-3 are 0.
+  - Mono16Low means that the data is not left-shifted by 4 bits, so bits 12-15 are 0.
+  - Mono16High means that the data is left-shifted by 4 bits, so bits 0-3 are 0.
   This requires ADGenICam R1-7 or later because that contains the code to handle the left-shift option.
 * Replaced the LeftShift record with ShiftDir and ShiftBits.
   - ShiftDir selects the direction in which to shift UInt16 data.  Choices are None, Left, and Right.
