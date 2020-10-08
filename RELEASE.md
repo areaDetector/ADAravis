@@ -16,22 +16,22 @@ Release Notes
 ----
 * Added new ConvertPixelFormat mbbo record with choices of Mono16Low and Mono16High.
   This record controls how Mono12Packed and Mono12p pixel formats are decompressed.
-  Mono16Low means that the data is not left-shifted by 4 bits, so bits 11-15 are 0.
+  Mono16Low means that the data is not left-shifted by 4 bits, so bits 12-15 are 0.
   Mono16High means that the data is left-shifted by 4 bits, so bits 0-3 are 0.
   This requires ADGenICam R1-7 or later because that contains the code to handle the left-shift option.
 * Replaced the LeftShift record with ShiftDir and ShiftBits.
-  ShiftDir selects the direction in which to shift UInt16 data.  Choices are None, Left, and Right.
-  ShiftBits controls the number of bits to shift.  Choices are 1-8.  This record is not used if ShiftDir=None.
-  This change allows complete control over how to shift Mono10, Mono12, and Mono16 pixel formats.
-  For example, FLIR cameras always left-shift Mono16 PixelFormat data so the most-significant bit 
-  is in bit 15, and the data range is 0-65535, even if the ADC is only 10 or 12 bits.
-  In some cases it may be preferable to right-shift this data so that it only spans the 
-  actual range of the ADC.
-  In the case of a 12-bit ADC this would be done with ShiftDir=Right and ShiftBits=4.
-  The data will then span the range 0-4095.
-  Note that when decompressing Mono12Packed and Mono12p data the ConvertPixelFormat
-  record selects whether or not to shift the data, so the ShiftDir record would normally
-  be set to None for those pixel formats.
+  - ShiftDir selects the direction in which to shift UInt16 data.  Choices are None, Left, and Right.
+  - ShiftBits controls the number of bits to shift.  Choices are 1-8.  This record is not used if ShiftDir=None.
+  - This change allows complete control over how to shift Mono10, Mono12, and Mono16 pixel formats.
+  - For example, FLIR cameras always left-shift Mono16 PixelFormat data so the most-significant bit 
+    is in bit 15, and the data range is 0-65535, even if the ADC is only 10 or 12 bits.
+  - In some cases it may be preferable to right-shift this data so that it only spans the 
+    actual range of the ADC. In the case of a 12-bit ADC this would be done with ShiftDir=Right and ShiftBits=4.
+    The data will then span the range 0-4095.
+  - Note that when decompressing Mono12Packed and Mono12p it may still be desirable to
+    use ShiftDir and ShiftBits.  For example on FLIR cameras if AdcBitDepth=10 then the data unpacked
+    with ConvertPixelFormat will be 12 bits with a range of 0-4095, with bits 0 and 1 both 0.
+    By using ShiftDir=Right and ShiftBits=2 then the data will be truly 10 bits, with a range of 0-1024.
 
 ### R2-1 (October 2, 2020)
 ----
