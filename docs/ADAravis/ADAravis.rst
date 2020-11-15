@@ -101,16 +101,23 @@ specific to ADAravis.
      - calcout
      - N.A.
      - Connects to the camera when available
-   * - ARLeftShift, ARLeftShift_RBV
+   * - ARConvertPixelFormat, ARConvertPixelFormat_RBV
      - mbbo/mbbi
-     - ARAVIS_LEFTSHIFT
-     - Choices are [0:"No", 1:"Yes"]. If this is set to 1, then 10, 12 and 16 bit images will be left shifted 
-       so that a pixel with maximum exposure = 2^16 no matter what the pixel format 
-   * - ARWImageMode, ARWImageMode_RBV
-     - bo/bi
-     - ARAVIS_HWIMAGEMODE
-     - Use HW register for acquisition modes.  Choices are [0:"No", 1:"Yes"].  Need to check implementation.
-
+     - ARAVIS_CONVERT_PIXEL_FORMAT
+     - Controls how Mono12Packed and Mono12p pixel formats are decompressed.
+       Choices are [0:"Mono16Low", 1:Mono16High"].
+       Mono16Low means that the data is not left-shifted by 4 bits, so bits 12-15 are 0.
+       Mono16High means that the data is left-shifted by 4 bits, so bits 0-3 are 0.
+   * - ARShiftDir, ARShiftDir_RBV
+     - mbbo/mbbi
+     - ARAVIS_SHIFT_DIR
+     - Controls how UInt16 data are shifted. Choices are [0:"None", 1:"Left", 2:"Right"].
+       The number of bits to shift is controlled by the ARShiftBits record.
+   * - ARShiftBits, ARShiftBits_RBV
+     - mbbo/mbbi
+     - ARAVIS_SHIFT_BITS
+     - Controls how many bits UInt16 data are shifted left or right. Choices are 1-8.
+       The direction to shift is controlled by the ARShiftDir record.
 
 IOC startup script
 ------------------
