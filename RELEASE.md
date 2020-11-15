@@ -30,7 +30,7 @@ Release Notes
     The data will then span the range 0-4095.
   - Note that when decompressing Mono12Packed and Mono12p it may still be desirable to
     use ShiftDir and ShiftBits.  For example on FLIR cameras if AdcBitDepth=10 then the data unpacked
-    with ConvertPixelFormat will be 12 bits with a range of 0-4095, with bits 0 and 1 both 0.
+    with ConvertPixelFormat=Mono16Low will be 12 bits with a range of 0-4095, with bits 0 and 1 both 0.
     By using ShiftDir=Right and ShiftBits=2 then the data will be truly 10 bits, with a range of 0-1023.
 
 ### R2-1 (October 2, 2020)
