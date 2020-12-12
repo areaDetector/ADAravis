@@ -18,7 +18,7 @@ PROD_SRCS += $(PROD_NAME)_registerRecordDeviceDriver.cpp $(PROD_NAME)Main.cpp
 PROD_LIBS += ADAravis
 PROD_LIBS += ADGenICam
 ifdef ARAVIS_LIB
-  aravis-0.6_DIR = $(ARAVIS_LIB)
+  aravis-0.8_DIR = $(ARAVIS_LIB)
   PROD_LIBS     += aravis-0.8
 else
   PROD_SYS_LIBS += aravis-0.8
