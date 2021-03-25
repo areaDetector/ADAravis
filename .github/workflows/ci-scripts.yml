@@ -1,0 +1,96 @@
+name: ADAravis
+
+# Trigger on pushes and PRs to any branch
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+  pull_request:
+
+env:
+  SETUP_PATH: .ci-local
+
+jobs:
+  test:
+    name: ${{ matrix.os }}/${{ matrix.base }}/${{ matrix.cmp }}/${{ matrix.configuration }}
+    runs-on: ${{ matrix.os }}
+    env:
+      CMP: ${{ matrix.cmp }}
+      BCFG: ${{ matrix.configuration }}
+      BASE: ${{ matrix.base }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Job names also name artifacts, character limitations apply
+        include:
+          - os: ubuntu-20.04
+            cmp: gcc
+            configuration: default
+            base: "7.0"
+
+          - os: ubuntu-20.04
+            cmp: gcc
+            configuration: static
+            base: "7.0"
+
+          - os: ubuntu-20.04
+            cmp: gcc
+            configuration: default
+            base: "3.15"
+
+          - os: ubuntu-20.04
+            cmp: gcc
+            configuration: static
+            base: "3.15"
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: "apt-get install"
+      run: |
+        sudo apt-get update
+        sudo apt-get -y install libreadline6-dev libncurses5-dev perl \
+          libgraphicsmagick++-dev libhdf5-dev libjpeg-dev libnetcdf-dev libtiff-dev libxml2-dev libz-dev \
+          libusb-1.0-0-dev \
+          pkg-config meson ninja-build
+
+    - name: Prepare and compile EPICS dependencies
+      run: python .ci/cue.py prepare
+
+    - name: Fetch aravis source
+      run: |
+        git clone --depth 1 --branch 0.57 https://github.com/mesonbuild/meson
+        git clone --depth 1 --branch 2.64.5 https://github.com/GNOME/glib
+        git clone --depth 1 --branch ARAVIS_0_8_6 https://github.com/AravisProject/aravis
+
+    - name: Build aravis
+      run: |
+        export PATH=$PATH:$PWD/usr/bin
+        export PKG_CONFIG_PATH=$PWD/usr/lib/x86_64-linux-gnu/pkgconfig
+        echo "Build glib"
+        python3 meson/meson.py setup --prefix=$PWD/usr glib build-glib
+        ninja -v -C build-glib install
+        echo "Build aravis"
+        python3 meson/meson.py --prefix=$PWD/usr --build.pkg-config-path "$PKG_CONFIG_PATH" aravis build-aravis
+        ninja -v -C build-aravis install
+
+    - name: ADAravis build config
+      run: |
+        export PKG_CONFIG_PATH=$PWD/usr/lib/x86_64-linux-gnu/pkgconfig
+        ls $PKG_CONFIG_PATH
+        pkg-config --cflags --libs glib-2.0 aravis-0.8
+
+        echo "USR_CPPFLAGS+=$(pkg-config --cflags glib-2.0 aravis-0.8)" >> configure/CONFIG_SITE.linux-x86_64.Common
+        echo "USR_LDFLAGS+=$(pkg-config --libs-only-L glib-2.0 aravis-0.8)" >> configure/CONFIG_SITE.linux-x86_64.Common
+
+        sed -i -e '/ADGENICAM/d' configure/RELEASE iocs/aravisIOC/configure/RELEASE
+        cp configure/CONFIG_SITE.linux-x86_64.Common iocs/aravisIOC/configure/CONFIG_SITE.linux-x86_64.Common
+        cp configure/RELEASE.local iocs/aravisIOC/configure/RELEASE.local
+
+        echo "BUILD_IOCS=YES" >> configure/CONFIG_SITE
+
+    - name: Build main module
+      run: python .ci/cue.py build
