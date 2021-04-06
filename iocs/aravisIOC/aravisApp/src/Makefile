@@ -24,7 +24,6 @@ else
   PROD_SYS_LIBS += aravis-0.8
 endif
 
-PROD_SYS_LIBS += giomm-2.4
 PROD_SYS_LIBS += gio-2.0 gobject-2.0 gthread-2.0 glib-2.0
 PROD_SYS_LIBS += usb-1.0
 
