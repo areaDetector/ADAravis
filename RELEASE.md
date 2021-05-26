@@ -12,6 +12,12 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
+### R2-2-1 (May 26, 2021)
+----
+* Added continuous integration via Github Actions.  Thanks to Michael Davidsaver for this.
+* Improve error reporting by fetching the underlying error from aravis.
+* Add missing LIB_LIBS in Makefile.
+
 ### R2-2 (November 15, 2020)
 ----
 * Added new ConvertPixelFormat mbbo record with choices of Mono16Low and Mono16High.
