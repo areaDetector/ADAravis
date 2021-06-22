@@ -204,12 +204,15 @@ private:
     int payload;
     int mEnableCaching;
     epicsThread pollingLoop;
+    std::vector<arvFeature*> featureList;
 };
 
 GenICamFeature *ADAravis::createFeature(GenICamFeatureSet *set, 
                                         std::string const & asynName, asynParamType asynType, int asynIndex,
                                         std::string const & featureName, GCFeatureType_t featureType) {
-    return new arvFeature(set, asynName, asynType, asynIndex, featureName, featureType, this->device);
+    arvFeature *pFeature = new arvFeature(set, asynName, asynType, asynIndex, featureName, featureType, this->device);
+    featureList.push_back(pFeature);
+    return pFeature;
 }
 
 /** Called by epicsAtExit to shutdown camera */
@@ -388,8 +391,6 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     this->pollingLoop.start();
 }
 
-
-
 asynStatus ADAravis::makeCameraObject() {
     const char *functionName = "makeCameraObject";
 
@@ -459,7 +460,7 @@ asynStatus ADAravis::makeStreamObject() {
         epicsThreadSleep(5);
         /* make the camera object */
         status = this->makeCameraObject();
-        if (status != asynSuccess) return (asynStatus) status;
+        if (status != asynSuccess) return status;
         /* Make the stream */
         this->stream = arv_camera_create_stream (this->camera, NULL, NULL, err.get());
     }
@@ -496,10 +497,9 @@ asynStatus ADAravis::makeStreamObject() {
     return asynSuccess;
 }
 
-
 asynStatus ADAravis::connectToCamera() {
-    const char *functionName = "connectToCamera";
-    int status = asynSuccess;
+    //const char *functionName = "connectToCamera";
+    asynStatus status = asynSuccess;
     GErrorHelper err;
 
     /* stop old camera if it exists */
@@ -513,11 +513,11 @@ asynStatus ADAravis::connectToCamera() {
 
     /* make the camera object */
     status = this->makeCameraObject();
-    if (status) return (asynStatus) status;
+    if (status) return status;
 
     /* Make sure it's stopped */
     arv_camera_stop_acquisition(this->camera, err.get());
-    status |= setIntegerParam(ADStatus, ADStatusIdle);
+    setIntegerParam(ADStatus, ADStatusIdle);
     
     /* Check the tick frequency */
     if (ARV_IS_GV_DEVICE(this->device)) {
@@ -530,25 +530,22 @@ asynStatus ADAravis::connectToCamera() {
         }
     }
     
+    /* Re-initialize the arvFeatures if they exist */
+    for (auto pFeature : this->featureList) {
+        pFeature->initialize(this->device);
+    }
+
     /* Make the stream */
     status = this->makeStreamObject();
-    if (status) return (asynStatus) status;    
+    if (status) return status;    
     
     /* connect connection lost signal to camera */
     g_signal_connect (this->device, "control-lost", G_CALLBACK (controlLostCallback), this);
 
-
-    /* Report if anything has failed */
-    if (status) {
-        asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-                    "%s:%s: Unable to get all camera parameters\n",
-                    driverName, functionName);
-    }
-
     /* Mark connection valid again */
     this->connectionValid = 1;
 
-    return (asynStatus) status;
+    return status;
 }
 
 /** Called when asyn clients call pasynInt32->write().
