@@ -4,6 +4,8 @@ include $(TOP)/configure/CONFIG
 
 LIBRARY_IOC_Linux += ADAravis
 
+USR_CXXFLAGS_Linux += -std=c++11
+
 # The following are compiled and added to the support library
 ADAravis_SRCS += arvFeature.cpp
 ADAravis_SRCS += ADAravis.cpp
