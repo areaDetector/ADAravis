@@ -15,6 +15,7 @@ public:
                std::string const & asynName, asynParamType asynType, int asynIndex,
                std::string const & featureName,
                GCFeatureType_t featureType, ArvDevice *device);
+    virtual void initialize(ArvDevice *device);
     virtual bool isImplemented(void);
     virtual bool isAvailable(void);
     virtual bool isReadable(void);

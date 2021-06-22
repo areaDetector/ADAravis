@@ -9,9 +9,17 @@ arvFeature::arvFeature(GenICamFeatureSet *set,
                        std::string const & featureName, GCFeatureType_t featureType, ArvDevice *device)
                      
     : GenICamFeature(set, asynName, asynType, asynIndex, featureName, featureType),
-    mNode(0), mDevice(device)         
+    mNode(0), mDevice(0)         
 {
-    mNode = arv_device_get_feature(mDevice, featureName.c_str());
+    this->initialize(device);
+}
+
+// This initialize function is used so we can reconnect with a new device pointer
+void arvFeature::initialize(ArvDevice *device)
+{
+printf("arvFeature::initialize %s\n", mFeatureName.c_str());
+    mDevice = device;
+    mNode = arv_device_get_feature(mDevice, mFeatureName.c_str());
     if (mNode) {
         mIsImplemented = arv_gc_feature_node_is_implemented(ARV_GC_FEATURE_NODE(mNode), NULL);
     } else {
