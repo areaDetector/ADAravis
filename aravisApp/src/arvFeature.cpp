@@ -17,7 +17,6 @@ arvFeature::arvFeature(GenICamFeatureSet *set,
 // This initialize function is used so we can reconnect with a new device pointer
 void arvFeature::initialize(ArvDevice *device)
 {
-printf("arvFeature::initialize %s\n", mFeatureName.c_str());
     mDevice = device;
     mNode = arv_device_get_feature(mDevice, mFeatureName.c_str());
     if (mNode) {
