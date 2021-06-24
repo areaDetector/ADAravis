@@ -41,3 +41,5 @@ iocInit()
 
 # save things every thirty seconds
 create_monitor_set("auto_settings.req", 30,"P=$(PREFIX)")
+create_manual_set("ADAutoSaveMenu.req", "P=$(PREFIX), CONFIG=ADAutoSave, CONFIGMENU=1")
+
