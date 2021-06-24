@@ -5,7 +5,8 @@ dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
 ADAravisApp_registerRecordDeviceDriver(pdbbase) 
 
 # Name of camera as reported by arv-tool
-epicsEnvSet("CAMERA_NAME", "Allied Vision Technologies-Manta G-507C (E0022705)-50-0503419258")
+#epicsEnvSet("CAMERA_NAME", "Allied Vision Technologies-Manta G-507C (E0022705)-50-0503419258")
+epicsEnvSet("CAMERA_NAME", "Allied Vision Technologies-Manta G-507C (E0022705)-50-0503479241")
 
 # The maximum image width; used for row profiles in the NDPluginStats plugin
 epicsEnvSet("XSIZE",  "2464")
