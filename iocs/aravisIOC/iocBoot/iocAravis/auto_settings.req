@@ -3,3 +3,5 @@ file "NDStdArrays_settings.req",  P=$(P),  R=image1:
 file "commonPlugin_settings.req", P=$(P)
 
 $(P)cam1:GC_Gamma
+$(P)cam1:GC_GevSCPSPacketSize
+
