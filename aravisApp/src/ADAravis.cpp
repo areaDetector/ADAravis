@@ -90,7 +90,7 @@ static const struct pix_lookup pix_lookup[] = {
     { ARV_PIXEL_FORMAT_BAYER_BG_8,    NDColorModeBayer, NDUInt8,  NDBayerBGGR },
 // For Int16, use Mono16 if available, otherwise Mono12
     { ARV_PIXEL_FORMAT_MONO_16,       NDColorModeMono,  NDUInt16, 0           },
-// this doesn't work on Manta camers    { ARV_PIXEL_FORMAT_MONO_14,       NDColorModeMono,  NDUInt16, 0           },
+    { ARV_PIXEL_FORMAT_MONO_14,       NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_MONO_12,       NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_MONO_12_P,     NDColorModeMono,  NDUInt16, 0           },
     { ARV_PIXEL_FORMAT_MONO_12_PACKED,NDColorModeMono,  NDUInt16, 0           },
