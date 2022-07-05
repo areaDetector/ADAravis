@@ -203,6 +203,8 @@ private:
     unsigned int featureIndex;
     int payload;
     int mEnableCaching;
+    int nConsecutiveBadFrames;
+    int nBadFramesPrior;
     epicsThread pollingLoop;
     std::vector<arvFeature*> featureList;
 };
@@ -246,7 +248,6 @@ static void newBufferCallbackC(ArvStream *stream, ADAravis *pPvt) {
 void ADAravis::newBufferCallback(ArvStream *stream) {
     ArvBuffer *buffer;
     int status;
-    static int nConsecutiveBadFrames = 0;
     static const char *functionName = "newBufferCallback";
 
     buffer = arv_stream_try_pop_buffer(stream);
@@ -271,7 +272,6 @@ void ADAravis::newBufferCallback(ArvStream *stream) {
                 "%s::%s bad frame status: %s\n", 
                 driverName, functionName, ArvBufferStatusToString(buffer_status) );
         else if ( ((nConsecutiveBadFrames-10) % 1000) == 0 ) {
-            static int  nBadFramesPrior = 0;
             asynPrint(pasynUserSelf, ASYN_TRACE_ERROR,
                 "%s::%s dad frame status: %s, %d msgs suppressed.\n", 
                 driverName, functionName, ArvBufferStatusToString(buffer_status), (nConsecutiveBadFrames - nBadFramesPrior));
@@ -319,6 +319,8 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
        genicam(NULL),
        payload(0),
        mEnableCaching(enableCaching),
+       nConsecutiveBadFrames(0),
+       nBadFramesPrior(0),
        pollingLoop(*this, 
                    "aravisPoll", 
                    stackSize>0 ? stackSize : epicsThreadGetStackSize(epicsThreadStackMedium), 
