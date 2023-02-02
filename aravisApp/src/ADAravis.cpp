@@ -559,20 +559,16 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
 {
     int function = pasynUser->reason;
     asynStatus status = asynSuccess;
-    epicsInt32 rbv;
     const char  *reasonName = "unknownReason";
     //static const char *functionName = "writeInt32";
     getParamName(0, function, &reasonName);
-
-    /* Set the parameter and readback in the parameter library.  This may be overwritten when we read back the
-     * status at the end, but that's OK */
-    getIntegerParam(function, &rbv);
-    status = setIntegerParam(function, value);
 
     /* If we have no camera, then just fail */
     if (function == AravisReset) {
         status = this->connectToCamera();
     } else if (this->camera == NULL || this->connectionValid != 1) {
+        epicsInt32 rbv;
+        getIntegerParam(function, &rbv);
         if (rbv != value)
             setIntegerParam(ADStatus, ADStatusDisconnected);
         status = asynError;
@@ -581,13 +577,14 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
     } else if (function == AravisFrameRetention || function == AravisPktResend || function == AravisPktTimeout ||
                function == AravisShiftDir || function == AravisShiftBits || function == AravisConvertPixelFormat) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
+        status = setIntegerParam(function, value);
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
         /* If this parameter belongs to a base class call its method */
         /* GenICam parameters are created after this constructor runs, so they are higher numbers */
         status = ADGenICam::writeInt32(pasynUser, value);
     /* generic feature lookup */
     } else {
-           status = asynError;
+        status = asynError;
     }
 
     /* Do callbacks so higher layers see any changes */
