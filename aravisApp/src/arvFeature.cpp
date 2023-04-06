@@ -142,6 +142,7 @@ void arvFeature::readEnumChoices(std::vector<std::string>& enumStrings, std::vec
         enumStrings.push_back(strings[i]);
         enumValues.push_back(values[i]);
     }
+    g_free(values);
     g_free(strings);
 }
 
