@@ -12,7 +12,7 @@ files respectively, in the configure/ directory of the appropriate release of th
 
 Release Notes
 =============
-### R2-3 (July XXX, 2021)
+### R2-3 (April XXX, 2023)
 ----
 * Improvements to allow reconnecting to the camera and downloading all settings to the camera without restarting the IOC.
   * Added arvFeature::initialize() and an std::vector of arvFeatures to allow re-initializing when the camera reconnects.
@@ -20,6 +20,8 @@ Release Notes
   * Add autosave command create_manual_set(ADAutoSaveMenu.req, ...) to iocBoot/iocAravis/st.cmd.base.
     This can be used to save and load the camera and plugin PV when the camera reconnects.  
     It can also be used to save and load different configurations for different setups.
+  * Fix problem with ADAcquire setting parameter library before calling base class.
+  * Fix to allow MONO_14 format to work.
 
 ### R2-2-1 (May 26, 2021)
 ----
