@@ -22,6 +22,7 @@ Release Notes
     It can also be used to save and load different configurations for different setups.
   * Fix problem with ADAcquire setting parameter library before calling base class.
   * Fix to allow MONO_14 format to work.
+  * Fix memory leak in arvFeature::readEnumChoices()
 
 ### R2-2-1 (May 26, 2021)
 ----
