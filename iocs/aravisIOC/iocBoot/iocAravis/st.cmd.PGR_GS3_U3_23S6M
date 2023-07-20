@@ -5,7 +5,8 @@ dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
 ADAravisApp_registerRecordDeviceDriver(pdbbase) 
 
 # Name of camera as reported by arv-tool
-epicsEnvSet("CAMERA_NAME", "PointGrey-00D774C6")
+#epicsEnvSet("CAMERA_NAME", "PointGrey-00D774C6")
+epicsEnvSet("CAMERA_NAME", "PointGrey-010AAA3E")
 
 # The maximum image width; used for row profiles in the NDPluginStats plugin
 epicsEnvSet("XSIZE",  "1920")
