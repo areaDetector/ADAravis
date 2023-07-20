@@ -20,6 +20,7 @@ Release Notes
   * Add autosave command create_manual_set(ADAutoSaveMenu.req, ...) to iocBoot/iocAravis/st.cmd.base.
     This can be used to save and load the camera and plugin PV when the camera reconnects.  
     It can also be used to save and load different configurations for different setups.
+* Relinquish control of camera before doing a reset.  Thanks to Evan Daykin for this.
 * Fix problem with ADAcquire setting parameter library before calling base class.
 * Fix to allow MONO_14 format to work.
 * Fix memory leak in arvFeature::readEnumChoices()
