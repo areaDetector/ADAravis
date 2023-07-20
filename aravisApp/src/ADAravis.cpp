@@ -398,7 +398,20 @@ asynStatus ADAravis::makeCameraObject() {
 
     GErrorHelper err;
     /* remove old camera if it exists */
+    /* relinquish CCP before unreferencing it */
     if (this->camera != NULL) {
+        if(arv_camera_is_gv_device(this->camera) && arv_gv_device_is_controller(ARV_GV_DEVICE(this->device))){
+            if (!(arv_gv_device_leave_control(ARV_GV_DEVICE(this->device),err.get()))){
+                asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+                    "%s:%s: Current ArvGvDevice has control, but control couldn't be relinquished. err=%s\n",
+                    driverName, functionName, err->message);
+            }
+            else {
+                asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+                    "%s:%s: Relinquished control of camera.\n",
+                    driverName, functionName);
+            }
+        }
         g_object_unref(this->camera);
         this->camera = NULL;
     }
