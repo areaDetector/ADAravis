@@ -1,0 +1,25 @@
+< envPaths
+errlogInit(20000)
+
+dbLoadDatabase("$(TOP)/dbd/ADAravisApp.dbd")
+ADAravisApp_registerRecordDeviceDriver(pdbbase) 
+
+# Name of camera as reported by arv-tool
+epicsEnvSet("CAMERA_NAME", "Allied Vision Technologies-GC1380H (02-2142A)-02-2142A-06178")
+
+# The maximum image width; used for row profiles in the NDPluginStats plugin
+epicsEnvSet("XSIZE",  "2464")
+
+# The maximum image height; used for column profiles in the NDPluginStats plugin
+epicsEnvSet("YSIZE",  "2056")
+
+# Define NELEMENTS to be enough for a 2464x2056x3 (color) image
+epicsEnvSet("NELEMENTS", "15197952")
+
+# Enable register caching
+epicsEnvSet("ENABLE_CACHING", "1")
+
+# The database file
+epicsEnvSet("GENICAM_DB_FILE", "$(ADGENICAM)/db/AVT_GC1380H.template")
+
+< st.cmd.base
