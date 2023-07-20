@@ -34,7 +34,7 @@ extern "C" {
 #include <epicsExport.h>
 #include <arvFeature.h>
 
-#define DRIVER_VERSION "2.2.1"
+#define DRIVER_VERSION "2.3"
 // aravis does not define the Mono12p format yet.
 #define ARV_PIXEL_FORMAT_MONO_12_P         ((ArvPixelFormat) 0x010c0047u)
 
