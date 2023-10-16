@@ -1,5 +1,6 @@
 vendor/aravis*
 configure/*.local
+*.local
 O.*/
 bin/
 lib/
