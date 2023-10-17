@@ -185,7 +185,8 @@ protected:
     int AravisShiftBits;
     int AravisConnection;
     int AravisReset;
-    #define LAST_ARAVIS_CAMERA_PARAM AravisReset
+    int AravisTimestampMode;
+    #define LAST_ARAVIS_CAMERA_PARAM AravisTimestampMode
 
 private:
     asynStatus allocBuffer();
@@ -356,6 +357,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     createParam("ARAVIS_SHIFT_BITS",     asynParamInt32,   &AravisShiftBits);
     createParam("ARAVIS_CONNECTION",     asynParamInt32,   &AravisConnection);
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
+    createParam("ARAVIS_TIME_STAMP_MODE", asynParamInt32,  &AravisTimestampMode);
 
     /* Set some initial values for other parameters */
     setStringParam(NDDriverVersion, DRIVER_VERSION);
@@ -587,8 +589,11 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
         status = asynError;
     } else if (function == AravisConnection) {
         if (this->connectionValid != 1) status = asynError;
-    } else if (function == AravisFrameRetention || function == AravisPktResend || function == AravisPktTimeout ||
-               function == AravisShiftDir || function == AravisShiftBits || function == AravisConvertPixelFormat) {
+    } else if (function == AravisFrameRetention ||
+               function == AravisPktResend || function == AravisPktTimeout ||
+               function == AravisShiftDir || function == AravisShiftBits ||
+               function == AravisConvertPixelFormat ||
+               function == AravisTimestampMode) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
         status = setIntegerParam(function, value);
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
@@ -801,10 +806,23 @@ asynStatus ADAravis::processBuffer(ArvBuffer *buffer) {
 
     /* Put the frame number and time stamp into the buffer */
     pRaw->uniqueId = imageCounter;
-    pRaw->timeStamp = arv_buffer_get_timestamp(buffer) / 1.e9;
 
     /* Update the areaDetector timeStamp */
     updateTimeStamp(&pRaw->epicsTS);
+
+    int timestampMode;
+    getIntegerParam(AravisTimestampMode, &timestampMode);
+    switch(timestampMode) {
+        case 0:
+            pRaw->timeStamp = arv_buffer_get_timestamp(buffer) / 1.e9;
+            break;
+        case 1:
+            pRaw->timeStamp =
+                pRaw->epicsTS.secPastEpoch + pRaw->epicsTS.nsec / 1e9;
+            break;
+        default:
+            pRaw->timeStamp = arv_buffer_get_system_timestamp(buffer) / 1.e9;
+    }
 
     /* Get any attributes that have been defined for this driver */
     this->getAttributes(pRaw->pAttributeList);
