@@ -526,6 +526,9 @@ asynStatus ADAravis::connectToCamera() {
     /* Tell areaDetector it is no longer acquiring */
     setIntegerParam(ADAcquire, 0);
 
+    /* update device list */
+    arv_update_device_list();
+
     /* make the camera object */
     status = this->makeCameraObject();
     if (status) return status;
