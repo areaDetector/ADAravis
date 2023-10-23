@@ -226,6 +226,7 @@ static void aravisShutdown(void* arg) {
     arv_camera_stop_acquisition(pPvt->camera, err.get());
     pPvt->connectionValid = 0;
     epicsThreadSleep(0.1);
+    arv_stream_set_emit_signals (pPvt->stream, FALSE);
     g_clear_object(&pPvt->stream);
     g_clear_object(&pPvt->camera);
     printf("ADAravis: OK\n");
