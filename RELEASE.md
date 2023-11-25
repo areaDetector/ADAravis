@@ -24,6 +24,7 @@ Release Notes
 * Fix problem with ADAcquire setting parameter library before calling base class.
 * Fix to allow MONO_14 format to work.
 * Fix memory leak in arvFeature::readEnumChoices()
+* This release requires aravis version ARAVIS_0_8_3 or higher, because that is when arv_gv_leave_control() was added.
 
 ### R2-2-1 (May 26, 2021)
 ----
