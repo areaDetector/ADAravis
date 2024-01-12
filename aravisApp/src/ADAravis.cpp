@@ -185,7 +185,8 @@ protected:
     int AravisShiftBits;
     int AravisConnection;
     int AravisReset;
-    #define LAST_ARAVIS_CAMERA_PARAM AravisReset
+    int AravisAutoConnect;
+    #define LAST_ARAVIS_CAMERA_PARAM AravisAutoConnect
 
 private:
     asynStatus allocBuffer();
@@ -195,6 +196,7 @@ private:
     asynStatus connectToCamera();
     asynStatus makeCameraObject();
     asynStatus makeStreamObject();
+    void reconnectIfNeeded();
 
     ArvStream *stream;
     ArvDevice *device;
@@ -356,6 +358,7 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     createParam("ARAVIS_SHIFT_BITS",     asynParamInt32,   &AravisShiftBits);
     createParam("ARAVIS_CONNECTION",     asynParamInt32,   &AravisConnection);
     createParam("ARAVIS_RESET",          asynParamInt32,   &AravisReset);
+    createParam("ARAVIS_AUTO_CONNECT",   asynParamInt32,   &AravisAutoConnect);
 
     /* Set some initial values for other parameters */
     setStringParam(NDDriverVersion, DRIVER_VERSION);
@@ -377,7 +380,8 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
     setIntegerParam(AravisShiftDir, 0);
     setIntegerParam(AravisShiftBits, 4);
     setIntegerParam(AravisReset, 0);
-    
+    setIntegerParam(AravisAutoConnect, true);
+
     /* Enable the fake camera for simulations */
     arv_enable_interface ("Fake");
 
@@ -587,8 +591,11 @@ asynStatus ADAravis::writeInt32(asynUser *pasynUser, epicsInt32 value)
         status = asynError;
     } else if (function == AravisConnection) {
         if (this->connectionValid != 1) status = asynError;
-    } else if (function == AravisFrameRetention || function == AravisPktResend || function == AravisPktTimeout ||
-               function == AravisShiftDir || function == AravisShiftBits || function == AravisConvertPixelFormat) {
+    } else if (function == AravisFrameRetention ||
+               function == AravisPktResend || function == AravisPktTimeout ||
+               function == AravisShiftDir || function == AravisShiftBits ||
+               function == AravisConvertPixelFormat ||
+               function == AravisAutoConnect) {
         /* just write the value for these as they get fetched via getIntegerParam when needed */
         status = setIntegerParam(function, value);
     } else if ((function < FIRST_ARAVIS_CAMERA_PARAM) || (function > LAST_ARAVIS_CAMERA_PARAM)) {
@@ -670,6 +677,20 @@ asynStatus ADAravis::allocBuffer() {
     return asynSuccess;
 }
 
+void ADAravis::reconnectIfNeeded() {
+    int autoConnect;
+    if (this->connectionValid == 0) {
+        this->lock();
+        getIntegerParam(AravisAutoConnect, &autoConnect);
+        if (autoConnect) {
+            if(this->connectToCamera() == asynSuccess) {
+                readStatus();
+            }
+        }
+        this->unlock();
+    }
+}
+
 /** Check what event we have, and deal with new frames.
     this->camera exists, lock not taken */
 void ADAravis::run() {
@@ -688,6 +709,7 @@ void ADAravis::run() {
     while (1) {
         /* Wait 5ms for an array to arrive from the queue */
         if (epicsMessageQueueReceiveWithTimeout(this->msgQId, &buffer, sizeof(&buffer), 0.005) == -1) {
+            reconnectIfNeeded();
         } else {
             /* Got a buffer, so lock up and process it */
             this->lock();
