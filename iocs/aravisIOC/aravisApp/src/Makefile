@@ -9,6 +9,7 @@ PROD_IOC_Darwin += $(PROD_NAME)
 
 # <name>.dbd will be created from <name>Include.dbd
 DBD += $(PROD_NAME).dbd
+$(PROD_NAME)_DBD += ADGenICamSupport.dbd
 $(PROD_NAME)_DBD += ADAravisSupport.dbd
 
 # <name>_registerRecordDeviceDriver.cpp will be created from <name>.dbd
