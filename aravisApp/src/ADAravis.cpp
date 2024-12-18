@@ -166,6 +166,7 @@ public:
 
     /** Used by epicsAtExit */
     ArvCamera *camera;
+    ArvStream *stream;
 
     /** Used by connection lost callback */
     int connectionValid;
@@ -196,7 +197,6 @@ private:
     asynStatus makeCameraObject();
     asynStatus makeStreamObject();
 
-    ArvStream *stream;
     ArvDevice *device;
     ArvGc *genicam;
     char *cameraName;
@@ -221,13 +221,14 @@ GenICamFeature *ADAravis::createFeature(GenICamFeatureSet *set,
 static void aravisShutdown(void* arg) {
     ADAravis *pPvt = (ADAravis *) arg;
     GErrorHelper err;
-    ArvCamera *cam = pPvt->camera;
+
     printf("ADAravis: Stopping %s... ", pPvt->portName);
-    arv_camera_stop_acquisition(cam, err.get());
+    arv_camera_stop_acquisition(pPvt->camera, err.get());
     pPvt->connectionValid = 0;
     epicsThreadSleep(0.1);
-    pPvt->camera = NULL;
-    g_object_unref(cam);
+    arv_stream_set_emit_signals (pPvt->stream, FALSE);
+    g_clear_object(&pPvt->stream);
+    g_clear_object(&pPvt->camera);
     printf("ADAravis: OK\n");
 }
 
@@ -313,8 +314,8 @@ ADAravis::ADAravis(const char *portName, const char *cameraName, int enableCachi
 
     : ADGenICam(portName, maxMemory, priority, stackSize),
        camera(NULL),
-       connectionValid(0),
        stream(NULL),
+       connectionValid(0),
        device(NULL),
        genicam(NULL),
        payload(0),
@@ -525,6 +526,9 @@ asynStatus ADAravis::connectToCamera() {
 
     /* Tell areaDetector it is no longer acquiring */
     setIntegerParam(ADAcquire, 0);
+
+    /* update device list */
+    arv_update_device_list();
 
     /* make the camera object */
     status = this->makeCameraObject();
