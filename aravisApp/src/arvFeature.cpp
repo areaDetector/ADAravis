@@ -38,7 +38,7 @@ bool arvFeature::isAvailable() {
         ArvGcEnumeration *enumeration = (ARV_GC_ENUMERATION (mNode));
         arv_gc_enumeration_dup_available_int_values(enumeration, &numEnums, NULL);
         if (numEnums == 0) {
-            printf("arvFeature::isAvailable() returning false for %s because numEnums=0\n", mFeatureName.c_str());
+            //printf("arvFeature::isAvailable() returning false for %s because numEnums=0\n", mFeatureName.c_str());
             return false;
         }
     }
