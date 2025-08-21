@@ -3,9 +3,8 @@
 # top directory each time this file is changed.
 
 ADARAVIS=$(TOP)/../..
+ADGENICAM = $(AREA_DETECTOR)/ADGenICam
 
 -include $(TOP)/../../../configure/RELEASE_PRODS_INCLUDE
 -include $(TOP)/RELEASE.local
 -include $(TOP)/configure/RELEASE.local
-
-ADGENICAM = $(AREA_DETECTOR)/ADGenICam
