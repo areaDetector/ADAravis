@@ -123,13 +123,15 @@ IOC startup script
 ------------------
 The command to configure an ADAravis camera in the startup script is::
 
-  aravisConfig(const char *portName, const char *cameraName, size_t maxMemory, int priority, int stackSize)
-  
+  aravisConfig(const char *portName, const char *cameraName, int enableCaching, size_t maxMemory, int priority, int stackSize)
 ``portName`` is the name for the ADAravis port driver
 
 ``cameraName`` is the identifier for the camera.  It can be the complete camera name returned by arv-tool, for example
 ``"Point Grey Research-Blackfly S BFS-PGE-50S5C-18585624"``, or it can be an IP address for GigE and 10 GigE cameras, for
 example ``"164.54.160.117"``.
+
+``enableCaching`` Flag to enable (1) or disable (0) register caching in aravis. Performance is much better when caching is
+enabled, but some cameras may not properly implement this.
 
 ``maxMemory`` is the maximum amount of memory the NDArrayPool is allowed to allocate.  0 means unlimited.
 
